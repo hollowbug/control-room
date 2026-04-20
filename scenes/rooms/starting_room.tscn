@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://7bs7c7wvcu1d"]
+
+[ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_33dqs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e68di"]
+size = Vector3(9, 1, 9)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_i3fwb"]
+size = Vector2(9.1, 9.1)
+
+[node name="StartingRoom" type="Node3D" unique_id=1139310745]
+script = ExtResource("1_33dqs")
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=636374050]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1124978780]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_e68di")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1140583238]
+mesh = SubResource("PlaneMesh_i3fwb")
+
+[node name="PopupPanel" type="PopupPanel" parent="." unique_id=1465638631]
