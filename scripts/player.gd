@@ -2,7 +2,9 @@ extends CharacterBody3D
 class_name Player
 
 const SPEED = 8.0
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 3.0
+const JUMP_GRAVITY = 2.0
+const FALL_GRAVITY = 12.0
 const CAMERA_MAX_PITCH_DEGREES = 85
 const MOUSE_SENSITIVITY = 0.002
 
@@ -24,19 +26,27 @@ var carry_strength := 1000.0
 var held_item: RigidBody3D
 var held_item_target_distance: float
 
+@export var jump_timer: Timer
 @export var player_control: bool
 @onready var camera: Camera3D = $Head/Camera3D
 
+var _jumping := false
+
 
 func _enter_tree() -> void:
-	set_multiplayer_authority(int(name))
+	if name.is_valid_int():
+		set_multiplayer_authority(int(name))
 
 
 func _ready() -> void:
+	if jump_timer:
+		jump_timer.timeout.connect(_on_jump_timer_timeout)
 	if is_multiplayer_authority():
 		take_control()
 	else:
 		set_physics_process(false)
+		if interact_ray:
+			interact_ray.enabled = false
 
 
 func _input(event: InputEvent) -> void:
@@ -60,15 +70,21 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	if not player_control: return
-	# Add the gravity.
+	
+	# Add gravity
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		if _jumping and not Input.is_action_pressed("jump"):
+			_jumping = false
+		velocity += Vector3.DOWN * (JUMP_GRAVITY if _jumping else FALL_GRAVITY) * delta
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	# Handle jump
+	elif Input.is_action_just_pressed("ui_accept"):
+		if jump_timer:
+			jump_timer.start()
+			_jumping = true
 		velocity.y = JUMP_VELOCITY
 
-	# Get the input direction and handle the movement/deceleration..
+	# Get the input direction and handle the movement
 	var input_dir := Vector2()
 	if player_control and not UI.is_pause_menu_open():
 		input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -91,8 +107,9 @@ func _physics_process(delta: float) -> void:
 
 
 @rpc("reliable", "any_peer", "call_local")
-func set_global_position_rpc(pos: Vector3) -> void:
+func set_global_transform_rpc(pos: Vector3, rot: Vector3) -> void:
 	global_position = pos
+	global_rotation = rot
 
 
 func take_control() -> void:
@@ -164,3 +181,7 @@ func _move_held_item(_delta: float) -> void:
 	held_item.apply_force(linear_force)
 	var angular_force := held_item.angular_velocity * -5
 	held_item.apply_torque(angular_force)
+
+
+func _on_jump_timer_timeout() -> void:
+	_jumping = false

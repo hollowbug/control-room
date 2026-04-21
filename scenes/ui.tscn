@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bh3h5i2g5mpco" path="res://scripts/ui.gd" id="1_nt7q6"]
 
 [node name="UI" type="CanvasLayer" unique_id=2046044648]
+layer = 10
 script = ExtResource("1_nt7q6")
 
 [node name="InteractLabel" type="RichTextLabel" parent="." unique_id=1016575426]
@@ -60,8 +61,50 @@ offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1858755042]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=594931283]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer" unique_id=1805863089]
+layout_mode = 2
+text = "Power"
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer" unique_id=1461972481]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+
+[node name="LabelCurrentPower" type="Label" parent="MarginContainer/HBoxContainer" unique_id=130232216]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "10"
+horizontal_alignment = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer" unique_id=530141618]
+layout_mode = 2
+text = "/"
+
+[node name="LabelMaxPower" type="Label" parent="MarginContainer/HBoxContainer" unique_id=1843391493]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "10"
+
 [node name="PauseMenu" type="ColorRect" parent="." unique_id=685634354]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

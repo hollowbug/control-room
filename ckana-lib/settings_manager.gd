@@ -63,6 +63,13 @@ func _restore_window_settings(settings: Dictionary) -> void:
 		DisplayServer.window_set_mode(settings.window_mode)
 		if settings.window_mode == DisplayServer.WINDOW_MODE_FULLSCREEN\
 		or settings.window_mode == DisplayServer.WINDOW_MODE_MAXIMIZED:
+			#  Allow cmdline args to override screen
+			var args := OS.get_cmdline_args()
+			for arg in args:
+				var split := arg.split("=")
+				if split.size() == 2 and split[0] == "--force-screen" and split[1].is_valid_int():
+					DisplayServer.window_set_current_screen(int(split[1]))
+					return
 			DisplayServer.window_set_current_screen(settings.window_screen)
 		else:
 			if "window_position" in settings:

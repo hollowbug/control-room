@@ -13,4 +13,5 @@ mesh = SubResource("PlaneMesh_yhabb")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1833682767]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11195326, 0)
-omni_range = 20.0
+omni_range = 30.0
+omni_shadow_mode = 0

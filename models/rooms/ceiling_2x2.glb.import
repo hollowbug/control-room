@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cdasx4d273hxk"
-path="res://.godot/imported/ceiling_8x8.glb-95731a2f565f25e2c60f00b1e79c995f.scn"
+uid="uid://ds11bisonvhce"
+path="res://.godot/imported/ceiling_2x2.glb-c1df290b39ef498169e48946cc059a82.scn"
 
 [deps]
 
-source_file="res://models/rooms/ceiling_8x8.glb"
-dest_files=["res://.godot/imported/ceiling_8x8.glb-95731a2f565f25e2c60f00b1e79c995f.scn"]
+source_file="res://models/rooms/ceiling_2x2.glb"
+dest_files=["res://.godot/imported/ceiling_2x2.glb-c1df290b39ef498169e48946cc059a82.scn"]
 
 [params]
 

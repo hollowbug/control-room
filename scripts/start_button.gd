@@ -11,15 +11,15 @@ func _ready() -> void:
 
 
 func _on_interact_ray_entered(player: Player) -> void:
-	if player.name != "1" or multiplayer.get_unique_id() != 1: return
+	if player.name != "1" or not multiplayer.is_server(): return
 	UI.show_interact_prompt("Start")
 
 
 func _on_interact_ray_exited(player: Player) -> void:
-	if player.name != "1" or multiplayer.get_unique_id() != 1: return
+	if player.name != "1" or not multiplayer.is_server(): return
 	UI.hide_interact_prompt()
 
 
 func _on_interact_requested(player: Player) -> void:
-	if player.name != "1" or multiplayer.get_unique_id() != 1: return
+	if player.name != "1" or not multiplayer.is_server(): return
 	pressed.emit()

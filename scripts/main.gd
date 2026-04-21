@@ -2,7 +2,8 @@ extends Node
 
 const RoomGenerator = preload("uid://bc204rjvbei42")
 const StartButton = preload("uid://vdx11c47or")
-const PLAYER_SCENE = preload("uid://54njlhvy4526")
+const ControlRoomScreen = preload("uid://7qvord22my3h")
+const PLAYER_UID = "uid://54njlhvy4526"
 
 enum State { LOBBY, PLAYING }
 
@@ -10,20 +11,20 @@ enum State { LOBBY, PLAYING }
 @export var lobby_spawn_marker: Marker3D
 
 @onready var _room_generator: Node = $RoomGenerator
-@onready var _spawner: MultiplayerSpawner = $MultiplayerSpawner
-var _next_player_spawn_marker := 0
+@onready var _spawner: NodeSpawner = $NodeSpawner
+@onready var _screen: ControlRoomScreen = %Screen
 var _connected_players: Array[int] = [1]
 var _disconnected_players: Array[int]
 var _field_agents: Array[int]
+var _operator: int
 var _spectators: Array[int]
 var _state := State.LOBBY
+var _max_power := 10
+var _current_power: int
 
 
 func _ready() -> void:
-	multiplayer.peer_connected.connect(_on_peer_connected)
-	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	UI.show()
-	_spawner.spawn_function = _spawn_node
 	match MultiplayerManager.mode:
 		MultiplayerManager.Mode.SINGLE_PLAYER:
 			_host_setup()
@@ -57,49 +58,47 @@ func _input(event: InputEvent) -> void:
 		get_tree().reload_current_scene()
 
 
-func _host_setup() -> void:
-	multiplayer.peer_connected.connect(_on_peer_connected)
-	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-	_add_player()
-	%StartButton.pressed.connect(_start_game)
-
-
 func _client_setup() -> void:
 	%StartButton.queue_free()
 
 
 func _return_to_menu() -> void:
+	multiplayer.multiplayer_peer.close()
 	get_tree().change_scene_to_file.call_deferred("uid://0olohqhibl5v")
+
+
+#region HOST-ONLY FUNCTIONS //////////////////////////////
+
+func _host_setup() -> void:
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	_add_player()
+	%StartButton.pressed.connect(_start_round)
 
 
 func _on_peer_connected(id: int) -> void:
 	if _state == State.LOBBY:
 		_add_player(id)
+		if id not in _connected_players:
+			_connected_players.append(id)
+	elif id not in _spectators:
+		_spectators.append(id)
 
 
 func _on_peer_disconnected(id: int) -> void:
 	if _state == State.LOBBY or id in _field_agents:
 		_remove_player(id)
-
-
-func _spawn_node(data: Variant) -> Node:
-	var dict := data as Dictionary
-	if not dict: return
-	match dict.get("type"):
-		"player": 
-			var player := PLAYER_SCENE.instantiate() as Player
-			if player:
-				player.name = str(dict.get("id", 0))
-				player.position = dict.get("position", Vector3())
-				return player
-	return null
+		_connected_players.erase(id)
+		if id not in _disconnected_players:
+			_disconnected_players.append(id)
 
 
 func _add_player(id := 1) -> void:
 	_spawner.spawn({
-		type = "player",
+		uid = PLAYER_UID,
 		id = id,
 		position = lobby_spawn_marker.global_position,
+		rotation = lobby_spawn_marker.global_rotation
 	})
 
 
@@ -108,12 +107,39 @@ func _remove_player(id: int) -> void:
 		get_node(str(id)).queue_free()
 
 
-func _start_game() -> void:
+func _start_round() -> void:
 	print("Starting round")
-	_field_agents = _connected_players
+	_set_current_power.rpc(_max_power)
+	var players_shuffled := _connected_players.duplicate()
+	players_shuffled.shuffle()
+	
+	# One player stays in control room
+	_operator = players_shuffled.pop_front()
+	_screen.turn_on.rpc_id(_operator)
+	
+	# Other players get teleported into the starting room
+	_field_agents = players_shuffled
 	_room_generator.generate_map()
 	player_spawn_markers.shuffle()
-	for i in _connected_players.size():
-		var id := _connected_players[i]
+	for i in _field_agents.size():
+		var id := _field_agents[i]
 		var pos := player_spawn_markers[i].global_position
-		get_node(str(id)).set_global_position_rpc.rpc_id(id, pos)
+		var rot := player_spawn_markers[i].global_rotation
+		get_node(str(id)).set_global_transform_rpc.rpc_id(id, pos, rot)
+
+#endregion ///////////////////////////////////////////
+
+#region RPCs /////////////////////////////////////////
+
+@rpc("reliable", "call_local")
+func _set_current_power(value: int) -> void:
+	_current_power = value
+	UI.set_current_power(value)
+
+
+@rpc("reliable", "call_local")
+func _set_max_power(value: int) -> void:
+	_max_power = value
+	UI.set_max_power(value)
+
+#endregion ///////////////////////////////////////////

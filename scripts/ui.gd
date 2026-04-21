@@ -21,12 +21,21 @@ func hide_crosshair() -> void:
 func show_interact_prompt(text: String) -> void:
 	if _interact_label:
 		_interact_label.show()
-		_interact_label.text = "[E] " + text
+		_interact_label.text = text
+		#_interact_label.text = "[E] " + text
 
 
 func hide_interact_prompt() -> void:
 	if _interact_label:
 		_interact_label.hide()
+
+
+func set_current_power(value: int) -> void:
+	%LabelCurrentPower.text = str(value)
+
+
+func set_max_power(value: int) -> void:
+	%LabelMaxPower.text = str(value)
 
 
 func open_pause_menu() -> void:

@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://7bs7c7wvcu1d"]
 
 [ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_33dqs"]
+[ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="2_e68di"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_e68di"]
-size = Vector3(9, 1, 9)
+size = Vector3(22, 1, 22)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i3fwb"]
-size = Vector2(9.1, 9.1)
+material = ExtResource("2_e68di")
+size = Vector2(22.1, 22.1)
 
 [node name="StartingRoom" type="Node3D" unique_id=1139310745]
 script = ExtResource("1_33dqs")
