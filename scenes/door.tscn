@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bg3i1qg76jyw8"]
+
+[ext_resource type="Script" uid="uid://ck2waihufia01" path="res://scripts/door.gd" id="1_hpvv5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uvdjg"]
+size = Vector3(3, 5, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_83dcw"]
+albedo_color = Color(0.556953, 0.556953, 0.556953, 1)
+metallic = 0.44
+roughness = 0.33
+
+[sub_resource type="BoxMesh" id="BoxMesh_la1wf"]
+material = SubResource("StandardMaterial3D_83dcw")
+size = Vector3(3, 5, 0.3)
+
+[node name="Door" type="Node3D" unique_id=1579850732]
+script = ExtResource("1_hpvv5")
+
+[node name="Left" type="AnimatableBody3D" parent="." unique_id=852572480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Left" unique_id=1317539415]
+shape = SubResource("BoxShape3D_uvdjg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Left" unique_id=1162681785]
+mesh = SubResource("BoxMesh_la1wf")
+
+[node name="Right" type="AnimatableBody3D" parent="." unique_id=1153767146]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Right" unique_id=1053501193]
+shape = SubResource("BoxShape3D_uvdjg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Right" unique_id=1386339336]
+mesh = SubResource("BoxMesh_la1wf")

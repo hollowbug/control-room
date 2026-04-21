@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://b4v2edubn7buh"]
 
+[ext_resource type="Script" uid="uid://c27xetfc8jtx6" path="res://scripts/control_screen.gd" id="1_l8rke"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixwfw"]
 content_margin_left = 16.0
 content_margin_top = 16.0
@@ -8,6 +10,7 @@ content_margin_bottom = 16.0
 bg_color = Color(0, 0, 0, 1)
 
 [node name="ControlScreen" type="CanvasLayer" unique_id=1744125494]
+script = ExtResource("1_l8rke")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=2125098053]
 anchors_preset = 15

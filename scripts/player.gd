@@ -3,7 +3,7 @@ class_name Player
 
 const SPEED = 8.0
 const JUMP_VELOCITY = 3.0
-const JUMP_GRAVITY = 2.0
+const JUMP_GRAVITY = -10.0
 const FALL_GRAVITY = 12.0
 const CAMERA_MAX_PITCH_DEGREES = 85
 const MOUSE_SENSITIVITY = 0.002

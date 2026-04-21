@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://vdx11c47or" path="res://scripts/start_button.gd" id="7_tipki"]
 [ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="8_tipki"]
 [ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="9_choun"]
-[ext_resource type="Script" uid="uid://7qvord22my3h" path="res://scripts/control_room_screen.gd" id="9_ya4ey"]
+[ext_resource type="Script" uid="uid://7qvord22my3h" path="res://scripts/screen_3d.gd" id="9_ya4ey"]
 [ext_resource type="Material" uid="uid://1fuludytonj7" path="res://resources/material_black.tres" id="10_ya4ey"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tipki"]

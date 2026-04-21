@@ -1,5 +1,7 @@
 extends Node3D
 
+const ControlScreen = preload("uid://c27xetfc8jtx6")
+
 @export var _interact_area: InteractArea
 @export var _camera: Camera3D
 @export var _sub_viewport: SubViewport
@@ -26,7 +28,7 @@ func _ready() -> void:
 func turn_on() -> void:
 	if not _sub_viewport: return
 	_turned_on = true
-	_screen = load("uid://b4v2edubn7buh").instantiate() as CanvasLayer
+	_screen = load("uid://b4v2edubn7buh").instantiate() as ControlScreen
 	if _screen:
 		_sub_viewport.add_child(_screen)
 

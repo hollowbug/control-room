@@ -10,7 +10,9 @@
 		{
 			"uuid": "384eb047-5b2e-4d07-8478-b7d608612e2e",
 			"title": "Todo",
-			"tasks": []
+			"tasks": [
+				"c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8"
+			]
 		},
 		{
 			"uuid": "0b0af853-6576-4b9b-b56a-b647ce5ec61a",
@@ -23,7 +25,15 @@
 			"tasks": []
 		}
 	],
-	"tasks": [],
+	"tasks": [
+		{
+			"uuid": "c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8",
+			"title": "Remember to not allow joining when versions don't match",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		}
+	],
 	"layout": {
 		"columns": [
 			[
