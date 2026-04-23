@@ -7,11 +7,13 @@ emission = Color(1, 1, 1, 1)
 [sub_resource type="PlaneMesh" id="PlaneMesh_yhabb"]
 material = SubResource("StandardMaterial3D_wdjhl")
 
-[node name="CeilingLight" type="MeshInstance3D" unique_id=1553590185]
-transform = Transform3D(1, 0, 0, 0, -0.99999994, 0, 0, 0, -0.99999994, 0, 0, 0)
+[node name="CeilingLight" type="Node3D" unique_id=1171493253]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1553590185]
+transform = Transform3D(1, 0, 0, 0, -0.99999994, 0, 0, 0, -0.99999994, 0, 8, 0)
 mesh = SubResource("PlaneMesh_yhabb")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1833682767]
+[node name="OmniLight3D" type="OmniLight3D" parent="MeshInstance3D" unique_id=1833682767]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11195326, 0)
 omni_range = 30.0
 omni_shadow_mode = 0

@@ -1,25 +1,79 @@
 [gd_scene format=3 uid="uid://7bs7c7wvcu1d"]
 
 [ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_33dqs"]
+[ext_resource type="PackedScene" uid="uid://b1xa43sara815" path="res://scenes/floor_1x1.tscn" id="2_02uo2"]
+[ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_7e8gg"]
 [ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="2_e68di"]
+[ext_resource type="Script" uid="uid://7qvord22my3h" path="res://scripts/screen_3d.gd" id="3_suqah"]
+[ext_resource type="Material" uid="uid://1fuludytonj7" path="res://resources/material_black.tres" id="4_02uo2"]
+[ext_resource type="Script" uid="uid://dud36siiy6rkp" path="res://scripts/interact_area.gd" id="5_7e8gg"]
+[ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="8_0yuyw"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_e68di"]
-size = Vector3(22, 1, 22)
+[sub_resource type="Resource" id="Resource_0yuyw"]
+script = ExtResource("2_7e8gg")
+direction = Vector2i(1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_i3fwb"]
+[sub_resource type="Resource" id="Resource_7e8gg"]
+script = ExtResource("2_7e8gg")
+direction = Vector2i(0, -1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_gc8kv"]
+script = ExtResource("2_7e8gg")
+direction = Vector2i(0, 1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="BoxMesh" id="BoxMesh_0yuyw"]
 material = ExtResource("2_e68di")
-size = Vector2(22.1, 22.1)
+size = Vector3(4, 2.338, 0.3)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gc8kv"]
+material = ExtResource("4_02uo2")
+size = Vector2(3.8, 2.138)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5vbr4"]
+size = Vector3(4, 2.5, 1)
 
 [node name="StartingRoom" type="Node3D" unique_id=1139310745]
 script = ExtResource("1_33dqs")
+allowed_connections = Array[ExtResource("2_7e8gg")]([SubResource("Resource_0yuyw"), SubResource("Resource_7e8gg"), SubResource("Resource_gc8kv")])
 
-[node name="Floor" type="StaticBody3D" parent="." unique_id=636374050]
+[node name="Floor1x1" parent="." unique_id=1879765563 instance=ExtResource("2_02uo2")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1124978780]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-shape = SubResource("BoxShape3D_e68di")
+[node name="Screen" type="Node3D" parent="." unique_id=586685329 node_paths=PackedStringArray("_interact_area", "_camera", "_sub_viewport", "_screen_mesh") groups=["screen"]]
+unique_name_in_owner = true
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -9.81, 2, 0)
+script = ExtResource("3_suqah")
+_interact_area = NodePath("InteractArea")
+_camera = NodePath("Node3D/Camera3D")
+_sub_viewport = NodePath("MeshInstance3D/MeshInstance3D/SubViewport")
+_screen_mesh = NodePath("MeshInstance3D/MeshInstance3D")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1140583238]
-mesh = SubResource("PlaneMesh_i3fwb")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Screen" unique_id=316694880]
+mesh = SubResource("BoxMesh_0yuyw")
+skeleton = NodePath("../..")
 
-[node name="PopupPanel" type="PopupPanel" parent="." unique_id=1465638631]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Screen/MeshInstance3D" unique_id=29058582]
+transform = Transform3D(1, -4.371139e-08, 4.371139e-08, 4.371139e-08, -4.371139e-08, -1, 4.371139e-08, 1, -4.3711385e-08, 0, 0, 0.17424583)
+mesh = SubResource("PlaneMesh_gc8kv")
+skeleton = NodePath("../..")
+
+[node name="SubViewport" type="SubViewport" parent="Screen/MeshInstance3D/MeshInstance3D" unique_id=662942700]
+size = Vector2i(1920, 1080)
+
+[node name="InteractArea" type="Area3D" parent="Screen" unique_id=925980165]
+script = ExtResource("5_7e8gg")
+metadata/_custom_type_script = "uid://dud36siiy6rkp"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Screen/InteractArea" unique_id=1500599213]
+shape = SubResource("BoxShape3D_5vbr4")
+
+[node name="Node3D" type="Node3D" parent="Screen" unique_id=569432065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.742276e-08, 0, 2)
+
+[node name="Camera3D" type="Camera3D" parent="Screen/Node3D" unique_id=200213110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6276147e-08, 0, -0.37235546)
+
+[node name="wall" parent="." unique_id=1418609656 instance=ExtResource("8_0yuyw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)

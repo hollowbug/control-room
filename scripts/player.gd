@@ -1,9 +1,9 @@
 extends CharacterBody3D
 class_name Player
 
-const SPEED = 8.0
-const JUMP_VELOCITY = 3.0
-const JUMP_GRAVITY = -10.0
+const SPEED = 6.5
+const JUMP_VELOCITY = 4.0
+const JUMP_GRAVITY = -4.0
 const FALL_GRAVITY = 12.0
 const CAMERA_MAX_PITCH_DEGREES = 85
 const MOUSE_SENSITIVITY = 0.002
@@ -90,7 +90,7 @@ func _physics_process(delta: float) -> void:
 		input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction := (global_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized() * SPEED
 	direction.y = velocity.y
-	velocity = velocity.move_toward(direction, delta * (10.0 + 10.0 * float(is_on_floor())))
+	velocity = velocity.move_toward(direction, delta * (20.0 if is_on_floor() else 5.0))
 	
 	# Head bob
 	_t_bob += delta * velocity.length() * float(is_on_floor())

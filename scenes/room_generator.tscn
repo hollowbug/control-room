@@ -4,3 +4,4 @@
 
 [node name="RoomGenerator" type="Node" unique_id=185415420]
 script = ExtResource("1_vnrtk")
+room_count = 10

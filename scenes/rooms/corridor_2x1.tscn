@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bvy6smqlncnii"]
+
+[ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_cedhs"]
+[ext_resource type="PackedScene" uid="uid://chrgeyauisyvw" path="res://scenes/floor_2x1.tscn" id="2_1ba7r"]
+[ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_lmnvl"]
+[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="3_aa77u"]
+[ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="5_8iajm"]
+
+[sub_resource type="Resource" id="Resource_8iajm"]
+script = ExtResource("2_lmnvl")
+direction = Vector2i(-1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_lrohv"]
+script = ExtResource("2_lmnvl")
+position = Vector2i(1, 0)
+direction = Vector2i(1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[node name="Corridor2x1" type="Node3D" unique_id=1095710676]
+script = ExtResource("1_cedhs")
+room_size = Vector2i(2, 1)
+allowed_connections = Array[ExtResource("2_lmnvl")]([SubResource("Resource_8iajm"), SubResource("Resource_lrohv")])
+metadata/_custom_type_script = "uid://bk3jcsthcrnvf"
+
+[node name="Floor2x1" parent="." unique_id=1879765563 instance=ExtResource("2_1ba7r")]
+
+[node name="CeilingLight" parent="." unique_id=1553590185 instance=ExtResource("3_aa77u")]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
+
+[node name="CeilingLight2" parent="." unique_id=1171493253 instance=ExtResource("3_aa77u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
+
+[node name="wall" parent="." unique_id=1418609656 instance=ExtResource("5_8iajm")]
+
+[node name="wall2" parent="." unique_id=1146264992 instance=ExtResource("5_8iajm")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="wall3" parent="." unique_id=1909290015 instance=ExtResource("5_8iajm")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 22, 0, 0)
+
+[node name="wall4" parent="." unique_id=208779589 instance=ExtResource("5_8iajm")]
+transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 22, 0, 0)

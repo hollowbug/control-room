@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://wjt4kf7msqvd"]
+
+[ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_fp7pd"]
+[ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_4fy4g"]
+[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="3_p6p1y"]
+[ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="4_0tbxy"]
+
+[sub_resource type="Resource" id="Resource_mjfwa"]
+script = ExtResource("2_4fy4g")
+position = Vector2i(2, 1)
+direction = Vector2i(1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_t8egs"]
+script = ExtResource("2_4fy4g")
+position = Vector2i(0, 1)
+direction = Vector2i(-1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_ijebt"]
+script = ExtResource("2_4fy4g")
+position = Vector2i(1, 2)
+direction = Vector2i(0, 1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_oo2b6"]
+script = ExtResource("2_4fy4g")
+position = Vector2i(1, 0)
+direction = Vector2i(0, -1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[node name="Big3x3" type="Node3D" unique_id=2133308153]
+script = ExtResource("1_fp7pd")
+room_size = Vector2i(3, 3)
+allowed_connections = Array[ExtResource("2_4fy4g")]([SubResource("Resource_mjfwa"), SubResource("Resource_t8egs"), SubResource("Resource_ijebt"), SubResource("Resource_oo2b6")])
+metadata/_custom_type_script = "uid://bk3jcsthcrnvf"
+
+[node name="Node3D" type="Node3D" parent="." unique_id=743796687]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 22)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Node3D" unique_id=493491141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(66, 1, 66)
+
+[node name="CeilingLight" parent="Node3D" unique_id=1171493253 instance=ExtResource("3_p6p1y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -11)
+
+[node name="CeilingLight2" parent="Node3D" unique_id=542545928 instance=ExtResource("3_p6p1y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, -11)
+
+[node name="CeilingLight3" parent="Node3D" unique_id=443887200 instance=ExtResource("3_p6p1y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 11)
+
+[node name="CeilingLight4" parent="Node3D" unique_id=51914689 instance=ExtResource("3_p6p1y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 11)
+
+[node name="wall" parent="Node3D" unique_id=1418609656 instance=ExtResource("4_0tbxy")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 22, 0, 22)
+
+[node name="wall2" parent="Node3D" unique_id=840367118 instance=ExtResource("4_0tbxy")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 22, 0, 22)
+
+[node name="wall3" parent="Node3D" unique_id=752211613 instance=ExtResource("4_0tbxy")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -22, 0, 22)
+
+[node name="wall4" parent="Node3D" unique_id=1291922613 instance=ExtResource("4_0tbxy")]
+transform = Transform3D(1.3113416e-07, 0, 1, 0, 1, 0, -1, 0, 1.3113416e-07, -22, 0, 22)
+
+[node name="wall5" parent="Node3D" unique_id=1365033005 instance=ExtResource("4_0tbxy")]
+transform = Transform3D(1.3113416e-07, 0, 1, 0, 1, 0, -1, 0, 1.3113416e-07, -22, 0, -22)
+
+[node name="wall6" parent="Node3D" unique_id=550483831 instance=ExtResource("4_0tbxy")]
+transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, -22, 0, -22)
+
+[node name="wall7" parent="Node3D" unique_id=782149266 instance=ExtResource("4_0tbxy")]
+transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 22, 0, -22)
+
+[node name="wall8" parent="Node3D" unique_id=993644695 instance=ExtResource("4_0tbxy")]
+transform = Transform3D(-2.1855695e-07, 0, -1, 0, 1, 0, 1, 0, -2.1855695e-07, 22, 0, -22)

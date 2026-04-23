@@ -18,6 +18,16 @@ static func is_event_mouse_wheel_down(event: InputEvent) -> bool:
 	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN
 
 
+static func rotate_vector2i(vector: Vector2i, clockwise_rotations: int) -> Vector2i:
+	var x := vector.x
+	var y := vector.y
+	match posmod(clockwise_rotations, 4):
+		1: return Vector2i(-y, x)
+		2: return Vector2i(-x, -y)
+		3: return Vector2i(y, -x)
+	return Vector2i(x, y)
+
+
 static func save_config_file(file_path: String, data: Variant) -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("data", "data", data)

@@ -12,11 +12,9 @@ enum State { LOBBY, PLAYING }
 
 @onready var _room_generator: Node = $RoomGenerator
 @onready var _spawner: NodeSpawner = $NodeSpawner
-@onready var _screen: ControlRoomScreen = %Screen
 var _connected_players: Array[int] = [1]
 var _disconnected_players: Array[int]
-var _field_agents: Array[int]
-var _operator: int
+var _living_players: Array[int]
 var _spectators: Array[int]
 var _state := State.LOBBY
 var _max_power := 10
@@ -25,6 +23,7 @@ var _current_power: int
 
 func _ready() -> void:
 	UI.show()
+	_room_generator.map_generation_finished.connect(_on_map_generation_finished)
 	match MultiplayerManager.mode:
 		MultiplayerManager.Mode.SINGLE_PLAYER:
 			_host_setup()
@@ -86,7 +85,7 @@ func _on_peer_connected(id: int) -> void:
 
 
 func _on_peer_disconnected(id: int) -> void:
-	if _state == State.LOBBY or id in _field_agents:
+	if _state == State.LOBBY or id in _living_players:
 		_remove_player(id)
 		_connected_players.erase(id)
 		if id not in _disconnected_players:
@@ -110,24 +109,26 @@ func _remove_player(id: int) -> void:
 func _start_round() -> void:
 	print("Starting round")
 	_set_current_power.rpc(_max_power)
-	var players_shuffled := _connected_players.duplicate()
-	players_shuffled.shuffle()
-	
-	# One player stays in control room
-	_operator = players_shuffled.pop_front()
-	_screen.turn_on.rpc_id(_operator)
-	
-	# Other players get teleported into the starting room
-	_field_agents = players_shuffled
+	_living_players = _connected_players
 	_room_generator.generate_map()
+	
+	# Teleport players into the starting room
 	player_spawn_markers.shuffle()
-	for i in _field_agents.size():
-		var id := _field_agents[i]
+	for i in _connected_players.size():
+		var id := _connected_players[i]
 		var pos := player_spawn_markers[i].global_position
 		var rot := player_spawn_markers[i].global_rotation
 		get_node(str(id)).set_global_transform_rpc.rpc_id(id, pos, rot)
 
 #endregion ///////////////////////////////////////////
+
+func _on_map_generation_finished() -> void:
+	## Setup the screen when the map is fully loaded
+	var screen := get_tree().get_first_node_in_group("screen") as ControlRoomScreen
+	if screen:
+		screen.turn_on()
+	else:
+		printerr("Screen not found")
 
 #region RPCs /////////////////////////////////////////
 

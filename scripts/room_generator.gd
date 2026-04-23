@@ -4,7 +4,6 @@ extends Node
 ## Emitted when all nodes have spawned on this peer
 signal map_generation_finished(map_id: int)
 
-const CELL_SIZE = 22.0
 #const UIDS = {
 	#wall = "uid://bcn52n0r6ewsn",
 	#wall_with_door = "uid://583hxvak04ds",
@@ -26,15 +25,17 @@ var _ceilings: Dictionary[Vector2i, PackedScene] = {
 	Vector2i(2, 2): load("uid://ds11bisonvhce"),
 }
 var _starting_room: PackedScene = load("uid://7bs7c7wvcu1d")
+var _door: PackedScene = load("uid://bg3i1qg76jyw8")
 var _wall: PackedScene = load("uid://bcn52n0r6ewsn")
 var _wall_with_door: PackedScene = load("uid://583hxvak04ds")
-var _door: PackedScene = load("uid://bg3i1qg76jyw8")
-var _light: PackedScene = load("uid://1eghxwbnkubr")
-var _rooms: Array[PackedScene] = [
+var _room_scenes: Array[PackedScene] = [
 	load("uid://eu6u2228knpv"),
+	load("uid://bvy6smqlncnii"),
+	load("uid://wjt4kf7msqvd"),
 ]
 var _directions: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
 var _grid: Dictionary[Vector2i, int]
+var _rooms: Array[Room]
 var _nodes: Array[Node]
 var _generating_map := false
 var _num_nodes_to_spawn: int
@@ -42,6 +43,7 @@ var _num_nodes_spawned := 0
 
 
 func _ready() -> void:
+	print(rad_to_deg(-0.065))
 	if spawner:
 		spawner.spawned.connect(_on_spawner_node_spawned)
 
@@ -49,107 +51,169 @@ func _ready() -> void:
 func generate_map() -> void:
 	map_index += 1
 	
+	print("\n==== STARTING GENERATION ====\n")
+	
 	# Cleanup
 	for node in _nodes:
 		node.queue_free()
 	_nodes.clear()
 	_grid.clear()
+	_rooms.clear()
 	if spawner:
 		for child in spawner.get_children():
 			child.queue_free()
-	_rooms.shuffle()
 	
-	# Populate _grid
+	# Place rooms
+	_room_scenes.shuffle()
 	for i in room_count:
+		#print()
 		var room: Room = _starting_room.instantiate() if i == 0\
-				else _rooms[(i - 1) % _rooms.size()].instantiate()
+				else _room_scenes[(i - 1) % _room_scenes.size()].instantiate()
 		
-		# 50% chance to rotate room
-		var rotated := randf() < 0.5
-		var room_size := Vector2i(room.room_size.y, room.room_size.x) if rotated\
-				else room.room_size
+		var room_size := room.room_size
+		var room_cells: Array[Vector2i]
+		for x: int in room_size.x:
+			for y: int in room_size.y:
+				room_cells.append(Vector2i(x, y))
+		
+		# Randomly rotate room
+		var rotation := randi() % 4
+		for j in room_cells.size():
+			room_cells[j] = Utils.rotate_vector2i(room_cells[j], rotation)
+		#if room_cells.size() > 1:
+		#prints("Allowed connections before:", room.allowed_connections.map(_conn_to_string))
+		for j in room.allowed_connections.size():
+			room.allowed_connections = room.allowed_connections.duplicate_deep(Resource.DeepDuplicateMode.DEEP_DUPLICATE_ALL)
+			room.allowed_connections[j].position = Utils.rotate_vector2i(room.allowed_connections[j].position, rotation)
+			room.allowed_connections[j].direction = Utils.rotate_vector2i(room.allowed_connections[j].direction, rotation)
+		#if room_cells.size() > 1:
+		#prints("Allowed connections after:", room.allowed_connections.map(_conn_to_string))
+		
+		#print("%s rotation: %s, room_cells: %s" % [room, rotation, room_cells])
+		#print("%s rotation: %s, room_cells: %s, allowed_connections: %s" % [room, rotation, room_cells, room.allowed_connections.map(_conn_to_string)])
 		
 		var pos := Vector2i()
 		
-		if not _grid.is_empty():
+		if i != 0:
+			var print_string := ""
 			# Find a place where the room fits
-			var positions := _grid.keys()
-			positions.shuffle()
+			_rooms.shuffle()
+			room.allowed_connections.shuffle()
 			var valid_pos_found := false
-			for p: Vector2i in positions:
-				_directions.shuffle()
-				for dir: Vector2i in _directions:
-					var blocked := false
-					var test_pos := p + dir
-					for x: int in room_size.x:
-						for y: int in room_size.y:
-							var cell_pos := test_pos + Vector2i(x, y)
+			for r: Room in _rooms:
+				for conn: RoomConnection in room.allowed_connections:
+					print_string += "\nChecking options for connection %s against room %s at %s" % [_conn_to_string(conn), r, r.grid_position]
+					for conn2: RoomConnection in r.allowed_connections:
+						pos = r.grid_position + conn2.position + conn2.direction - conn.position
+						print_string += "\n\tChecking %s's connection %s at %s" % [r, _conn_to_string(conn2), pos]
+						if conn.direction != -conn2.direction:
+							print_string += ": doors don't align."
+							continue
+						var blocked := false
+						for cell in room_cells:
+							var cell_pos := cell + pos
 							if cell_pos in _grid:
 								blocked = true
+								print_string += ": blocked."
 								break
-					if not blocked:
-						valid_pos_found = true
-						pos = test_pos
+						if not blocked:
+							valid_pos_found = true
+							r.allowed_connections.erase(conn2)
+							r.connections[conn2] = room
+							room.allowed_connections.erase(conn)
+							room.connections[conn] = r
+							#print("Connecting to %s's connection %s at %s" % [r, _conn_to_string(conn2), pos])
+							break
+					if valid_pos_found:
 						break
 				if valid_pos_found:
 					break
 			if not valid_pos_found:
 				room.queue_free()
+				print(print_string)
 				continue
 		
-		for x in room_size.x:
-			for y in room_size.y:
-				_grid[Vector2i(pos.x + x, pos.y + y)] = i
+		room.grid_position = pos
+		#print("Room pos: %s" % pos)
+		_rooms.append(room)
 		
-		# Place room, ceiling and _light
-		room.position = Vector3(
-			(pos.x + (room_size.x - 1) * 0.5) * CELL_SIZE,
-			0,
-			(pos.y + (room_size.y - 1) * 0.5) * CELL_SIZE,
-		)
+		for cell in room_cells:
+			_grid[pos + cell] = i
+		
+		# Place room and ceiling
+		room.position = Vector3(pos.x, 0, pos.y) * Globals.CELL_SIZE
+		room.rotate_y(rotation * PI * -0.5)
 		_spawn_node(room)
-		var ceiling: Node3D = _ceilings[room.room_size].instantiate()
-		ceiling.position = room.position
-		if not rotated:
-			ceiling.rotate_y(PI * 0.5)
-		_spawn_node(ceiling)
-		var light: Node3D = _light.instantiate()
-		light.position = room.position
-		light.position.y = 12.5
-		_spawn_node(light)
+		if room.room_size in _ceilings:
+			var ceiling: Node3D = _ceilings[room.room_size].instantiate()
+			ceiling.transform = room.transform
+			_spawn_node(ceiling)
 	
 	if _grid.size() < room_count:
 		print("Wasn't able to place all rooms")	
 	
+	#print(_grid)
+	
 	# Place walls and doors
-	var doors: Array[Vector4i] # Store doors as the two connected grid cells in a Vector4i
-	for pos: Vector2i in _grid:
-		var room_idx := _grid[pos]
-		for dir: Vector2i in _directions:
-			var neighbor_pos := pos + dir
-			var wall_position := Vector3(pos.x * CELL_SIZE, 0, pos.y * CELL_SIZE)
-			var wall_rotation := Basis.looking_at(Vector3(dir.x, 0, dir.y)).get_euler()
-			var wall_scene: PackedScene
-			var neighbor_idx: int = _grid.get(neighbor_pos, -1)
-			if neighbor_idx == -1:
-				wall_scene = _wall
-			elif neighbor_idx != room_idx:
-				wall_scene = _wall_with_door
-				var door_vecs: Array[Vector4i] = [
-					Vector4i(neighbor_pos.x, neighbor_pos.y, pos.x, pos.y),
-					Vector4i(pos.x, pos.y, neighbor_pos.x, neighbor_pos.y),
-				]
-				if door_vecs[0] not in doors and door_vecs[1] not in doors:
-					doors.append(door_vecs[0])
-					var door := _door.instantiate()
-					door.position = wall_position + Vector3(dir.x, 0, dir.y) * CELL_SIZE * 0.5
-					door.rotation = wall_rotation
-					_spawn_node(door)
-			if wall_scene:
-				var inst: Node3D = wall_scene.instantiate()
-				inst.position = wall_position
-				inst.rotation = wall_rotation
-				_spawn_node(inst)
+	for room in _rooms:
+		for conn in room.allowed_connections + room.connections.keys():
+			var wall := (_wall_with_door if conn in room.connections else _wall).instantiate() as Node3D
+			wall.position = Vector3(
+				room.grid_position.x + conn.position.x,
+				0,
+				room.grid_position.y + conn.position.y
+			) * Globals.CELL_SIZE
+			wall.basis = Basis.looking_at(Vector3(conn.direction.x, 0, conn.direction.y))
+			_spawn_node(wall)
+		
+		for conn in room.connections:
+			if conn not in room.doors:
+				var door := _door.instantiate() as Door
+				var room2 := room.connections[conn]
+				room.doors[conn] = door
+				for conn2 in room2.connections:
+					if room2.connections[conn2] == room:
+						room2.doors[conn2] = door
+						break
+				door.position = Vector3(
+					room.grid_position.x + conn.position.x + conn.direction.x * 0.5,
+					0,
+					room.grid_position.y + conn.position.y + conn.direction.y * 0.5
+				) * Globals.CELL_SIZE
+				door.basis = Basis.looking_at(Vector3(conn.direction.x, 0, conn.direction.y))
+				_spawn_node(door)
+	
+	#var doors: Array[Vector4i] # Store doors as the two connected grid cells in a Vector4i
+	#for pos: Vector2i in _grid:
+		#var room_idx := _grid[pos]
+		#for dir: Vector2i in _directions:
+			#var neighbor_pos := pos + dir
+			#var wall_position := Vector3(pos.x * Globals.CELL_SIZE, 0, pos.y * Globals.CELL_SIZE)
+			#var wall_rotation := Basis.looking_at(Vector3(dir.x, 0, dir.y)).get_euler()
+			#var wall_scene: PackedScene
+			#var neighbor_idx: int = _grid.get(neighbor_pos, -1)
+			#if neighbor_idx == -1:
+				#wall_scene = _wall
+			#elif neighbor_idx != room_idx:
+				## Place door between rooms
+				#var door_vecs: Array[Vector4i] = [
+					#Vector4i(neighbor_pos.x, neighbor_pos.y, pos.x, pos.y),
+					#Vector4i(pos.x, pos.y, neighbor_pos.x, neighbor_pos.y),
+				#]
+				## Don't allow a door where the screen is
+				#if (pos.y != 0 or neighbor_pos.y != 0 or (mini(pos.x, neighbor_pos.x) != -1 or maxi(pos.x, neighbor_pos.x) != 0))\
+				#and door_vecs[0] not in doors and door_vecs[1] not in doors:
+					#wall_scene = _wall_with_door
+					#doors.append(door_vecs[0])
+					#var door := _door.instantiate()
+					#door.position = wall_position + Vector3(dir.x, 0, dir.y) * Globals.CELL_SIZE * 0.5
+					#door.rotation = wall_rotation
+					#_spawn_node(door)
+			#if wall_scene:
+				#var inst: Node3D = wall_scene.instantiate()
+				#inst.position = wall_position
+				#inst.rotation = wall_rotation
+				#_spawn_node(inst)
 	
 	if is_multiplayer_authority():
 		map_generation_finished.emit()
@@ -173,7 +237,7 @@ func _spawn_node(node: Node) -> void:
 		spawner.spawn(dict)
 		node.queue_free()
 	else:
-		add_child(node)
+		add_child(node, true)
 		_nodes.append(node)
 
 
@@ -196,3 +260,7 @@ func _on_spawner_node_spawned(_node: Node) -> void:
 		_generating_map = false
 		_num_nodes_spawned = 0
 		map_generation_finished.emit()
+
+
+func _conn_to_string(conn: RoomConnection) -> String:
+	return "(pos: %s, dir: %s)" % [conn.position, conn.direction]

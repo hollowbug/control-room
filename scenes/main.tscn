@@ -3,15 +3,12 @@
 [ext_resource type="Script" uid="uid://dukaeg4vwdbpb" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://dp0v2vvckmh4y" path="res://scripts/node_spawner.gd" id="2_eb6dy"]
 [ext_resource type="Script" uid="uid://bc204rjvbei42" path="res://scripts/room_generator.gd" id="2_sugp2"]
-[ext_resource type="PackedScene" uid="uid://7bs7c7wvcu1d" path="res://scenes/rooms/starting_room.tscn" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="6_tipki"]
 [ext_resource type="PackedScene" uid="uid://cmpn21nlov2kw" path="res://models/rooms/ceiling_1x1.glb" id="7_85g3d"]
 [ext_resource type="Script" uid="uid://dud36siiy6rkp" path="res://scripts/interact_area.gd" id="7_o6xl0"]
 [ext_resource type="Script" uid="uid://vdx11c47or" path="res://scripts/start_button.gd" id="7_tipki"]
 [ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="8_tipki"]
 [ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="9_choun"]
-[ext_resource type="Script" uid="uid://7qvord22my3h" path="res://scripts/screen_3d.gd" id="9_ya4ey"]
-[ext_resource type="Material" uid="uid://1fuludytonj7" path="res://resources/material_black.tres" id="10_ya4ey"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tipki"]
 size = Vector3(4, 2, 1)
@@ -22,17 +19,6 @@ albedo_color = Color(0, 1, 1, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_choun"]
 material = SubResource("StandardMaterial3D_85g3d")
 size = Vector3(3.8, 1.8, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_eb6dy"]
-material = ExtResource("9_choun")
-size = Vector3(4, 2.338, 0.3)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_trceg"]
-material = ExtResource("10_ya4ey")
-size = Vector2(3.8, 2.138)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_eb6dy"]
-size = Vector3(4, 2.5, 1)
 
 [sub_resource type="Environment" id="Environment_tipki"]
 background_mode = 1
@@ -57,14 +43,17 @@ spawner = NodePath("NodeSpawner")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 0)
 
 [node name="Room" type="Node3D" parent="RoomGenerator/ControlRoom" unique_id=282391291]
-metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
+
+[node name="Floor" type="CSGBox3D" parent="RoomGenerator/ControlRoom/Room" unique_id=37029593]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
+use_collision = true
+size = Vector3(22, 1, 22)
+material = ExtResource("9_choun")
 
 [node name="CeilingLight" parent="RoomGenerator/ControlRoom/Room" unique_id=1553590185 instance=ExtResource("6_tipki")]
 transform = Transform3D(1, 0, 0, 0, -0.99999994, 0, 0, 0, -0.99999994, 0, 12.5, 0)
 skeleton = NodePath("")
-
-[node name="Floor" parent="RoomGenerator/ControlRoom/Room" unique_id=1226954546 instance=ExtResource("3_sugp2")]
 
 [node name="ceiling_1x1" parent="RoomGenerator/ControlRoom/Room" unique_id=1957775159 instance=ExtResource("7_85g3d")]
 
@@ -105,40 +94,6 @@ mesh = SubResource("BoxMesh_choun")
 transform = Transform3D(1, 0, 0, 0, 1.0000004, 0, 0, 0, 1.0000004, 0, 0.00030899048, 0.53033733)
 text = "Start"
 font_size = 256
-
-[node name="Screen" type="Node3D" parent="RoomGenerator/ControlRoom" unique_id=1830704012 node_paths=PackedStringArray("_interact_area", "_camera", "_sub_viewport", "_screen_mesh")]
-unique_name_in_owner = true
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -9.81, 2, 0)
-script = ExtResource("9_ya4ey")
-_interact_area = NodePath("InteractArea")
-_camera = NodePath("Node3D/Camera3D")
-_sub_viewport = NodePath("MeshInstance3D/MeshInstance3D/SubViewport")
-_screen_mesh = NodePath("MeshInstance3D/MeshInstance3D")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RoomGenerator/ControlRoom/Screen" unique_id=793683296]
-mesh = SubResource("BoxMesh_eb6dy")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RoomGenerator/ControlRoom/Screen/MeshInstance3D" unique_id=362402921]
-transform = Transform3D(1, -4.371139e-08, 4.371139e-08, 4.371139e-08, -4.371139e-08, -1, 4.371139e-08, 1, -4.3711385e-08, 0, 0, 0.17424583)
-mesh = SubResource("PlaneMesh_trceg")
-skeleton = NodePath("../..")
-
-[node name="SubViewport" type="SubViewport" parent="RoomGenerator/ControlRoom/Screen/MeshInstance3D/MeshInstance3D" unique_id=2126115475]
-size = Vector2i(1920, 1080)
-
-[node name="InteractArea" type="Area3D" parent="RoomGenerator/ControlRoom/Screen" unique_id=1161913779]
-script = ExtResource("7_o6xl0")
-metadata/_custom_type_script = "uid://dud36siiy6rkp"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RoomGenerator/ControlRoom/Screen/InteractArea" unique_id=1036588403]
-shape = SubResource("BoxShape3D_eb6dy")
-
-[node name="Node3D" type="Node3D" parent="RoomGenerator/ControlRoom/Screen" unique_id=566605037]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.742276e-08, 0, 2)
-
-[node name="Camera3D" type="Camera3D" parent="RoomGenerator/ControlRoom/Screen/Node3D" unique_id=643690147]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6276147e-08, 0, -0.37235546)
 
 [node name="NodeSpawner" type="MultiplayerSpawner" parent="RoomGenerator" unique_id=1430867230]
 spawn_path = NodePath(".")
