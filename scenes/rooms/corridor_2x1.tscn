@@ -31,13 +31,13 @@ transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
 [node name="CeilingLight2" parent="." unique_id=1171493253 instance=ExtResource("3_aa77u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
 
-[node name="wall" parent="." unique_id=1418609656 instance=ExtResource("5_8iajm")]
+[node name="wall" parent="." unique_id=623343374 instance=ExtResource("5_8iajm")]
 
-[node name="wall2" parent="." unique_id=1146264992 instance=ExtResource("5_8iajm")]
+[node name="wall2" parent="." unique_id=1680110975 instance=ExtResource("5_8iajm")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
-[node name="wall3" parent="." unique_id=1909290015 instance=ExtResource("5_8iajm")]
+[node name="wall3" parent="." unique_id=1552937885 instance=ExtResource("5_8iajm")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 22, 0, 0)
 
-[node name="wall4" parent="." unique_id=208779589 instance=ExtResource("5_8iajm")]
+[node name="wall4" parent="." unique_id=1841514763 instance=ExtResource("5_8iajm")]
 transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 22, 0, 0)

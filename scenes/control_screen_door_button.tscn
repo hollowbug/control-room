@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bwivs6k02v0qm"]
+
+[ext_resource type="Script" uid="uid://bkug5p21t45qo" path="res://scripts/control_screen_door_button.gd" id="1_w1b6g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1aq1i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vj5s"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="ControlScreenDoorButton" type="Node2D" unique_id=814966396]
+script = ExtResource("1_w1b6g")
+
+[node name="Button" type="Button" parent="." unique_id=2015848908]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -16.0
+offset_right = 32.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_1aq1i")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5vj5s")
+
+[node name="MarginContainer" type="MarginContainer" parent="Button" unique_id=1788272517]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ColorRect" type="ColorRect" parent="Button/MarginContainer" unique_id=697776917]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 1)

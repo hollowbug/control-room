@@ -77,20 +77,20 @@ func generate_map() -> void:
 				room_cells.append(Vector2i(x, y))
 		
 		# Randomly rotate room
-		var rotation := randi() % 4
+		room.room_rotation = randi() % 4
 		for j in room_cells.size():
-			room_cells[j] = Utils.rotate_vector2i(room_cells[j], rotation)
+			room_cells[j] = Utils.rotate_vector2i(room_cells[j], room.room_rotation)
 		#if room_cells.size() > 1:
 		#prints("Allowed connections before:", room.allowed_connections.map(_conn_to_string))
 		for j in room.allowed_connections.size():
 			room.allowed_connections = room.allowed_connections.duplicate_deep(Resource.DeepDuplicateMode.DEEP_DUPLICATE_ALL)
-			room.allowed_connections[j].position = Utils.rotate_vector2i(room.allowed_connections[j].position, rotation)
-			room.allowed_connections[j].direction = Utils.rotate_vector2i(room.allowed_connections[j].direction, rotation)
+			room.allowed_connections[j].position = Utils.rotate_vector2i(room.allowed_connections[j].position, room.room_rotation)
+			room.allowed_connections[j].direction = Utils.rotate_vector2i(room.allowed_connections[j].direction, room.room_rotation)
 		#if room_cells.size() > 1:
 		#prints("Allowed connections after:", room.allowed_connections.map(_conn_to_string))
 		
-		#print("%s rotation: %s, room_cells: %s" % [room, rotation, room_cells])
-		#print("%s rotation: %s, room_cells: %s, allowed_connections: %s" % [room, rotation, room_cells, room.allowed_connections.map(_conn_to_string)])
+		#print("%s room.room_rotation: %s, room_cells: %s" % [room, room.room_rotation, room_cells])
+		#print("%s room.room_rotation: %s, room_cells: %s, allowed_connections: %s" % [room, room.room_rotation, room_cells, room.allowed_connections.map(_conn_to_string)])
 		
 		var pos := Vector2i()
 		
@@ -142,7 +142,7 @@ func generate_map() -> void:
 		
 		# Place room and ceiling
 		room.position = Vector3(pos.x, 0, pos.y) * Globals.CELL_SIZE
-		room.rotate_y(rotation * PI * -0.5)
+		room.rotate_y(room.room_rotation * PI * -0.5)
 		_spawn_node(room)
 		if room.room_size in _ceilings:
 			var ceiling: Node3D = _ceilings[room.room_size].instantiate()
@@ -183,42 +183,10 @@ func generate_map() -> void:
 				door.basis = Basis.looking_at(Vector3(conn.direction.x, 0, conn.direction.y))
 				_spawn_node(door)
 	
-	#var doors: Array[Vector4i] # Store doors as the two connected grid cells in a Vector4i
-	#for pos: Vector2i in _grid:
-		#var room_idx := _grid[pos]
-		#for dir: Vector2i in _directions:
-			#var neighbor_pos := pos + dir
-			#var wall_position := Vector3(pos.x * Globals.CELL_SIZE, 0, pos.y * Globals.CELL_SIZE)
-			#var wall_rotation := Basis.looking_at(Vector3(dir.x, 0, dir.y)).get_euler()
-			#var wall_scene: PackedScene
-			#var neighbor_idx: int = _grid.get(neighbor_pos, -1)
-			#if neighbor_idx == -1:
-				#wall_scene = _wall
-			#elif neighbor_idx != room_idx:
-				## Place door between rooms
-				#var door_vecs: Array[Vector4i] = [
-					#Vector4i(neighbor_pos.x, neighbor_pos.y, pos.x, pos.y),
-					#Vector4i(pos.x, pos.y, neighbor_pos.x, neighbor_pos.y),
-				#]
-				## Don't allow a door where the screen is
-				#if (pos.y != 0 or neighbor_pos.y != 0 or (mini(pos.x, neighbor_pos.x) != -1 or maxi(pos.x, neighbor_pos.x) != 0))\
-				#and door_vecs[0] not in doors and door_vecs[1] not in doors:
-					#wall_scene = _wall_with_door
-					#doors.append(door_vecs[0])
-					#var door := _door.instantiate()
-					#door.position = wall_position + Vector3(dir.x, 0, dir.y) * Globals.CELL_SIZE * 0.5
-					#door.rotation = wall_rotation
-					#_spawn_node(door)
-			#if wall_scene:
-				#var inst: Node3D = wall_scene.instantiate()
-				#inst.position = wall_position
-				#inst.rotation = wall_rotation
-				#_spawn_node(inst)
-	
 	if is_multiplayer_authority():
 		map_generation_finished.emit()
-	elif spawner:
-		_start_generation.rpc(map_index, spawner.get_child_count())
+		if spawner:
+			_start_generation.rpc(map_index, spawner.get_child_count())
 
 
 func is_map_generated(map_id: int) -> bool:
@@ -234,6 +202,9 @@ func _spawn_node(node: Node) -> void:
 		if node is Node3D:
 			dict.position = node.position
 			dict.rotation = node.rotation
+		if node is Room:
+			dict.room_position = node.grid_position
+			dict.room_rotation = node.room_rotation
 		spawner.spawn(dict)
 		node.queue_free()
 	else:

@@ -3,54 +3,86 @@ extends Node3D
 const ControlScreen = preload("uid://c27xetfc8jtx6")
 
 @export var _interact_area: InteractArea
-@export var _camera: Camera3D
+#@export var _camera: Camera3D
 @export var _sub_viewport: SubViewport
+@export var _sub_viewport_container: SubViewportContainer
 @export var _screen_mesh: MeshInstance3D
-@onready var _screen_plane: Plane
+#var _screen_plane: Plane
 var _turned_on := false
 var _player_using_screen := false
-var _screen: CanvasLayer
+var _screen: ControlScreen
 
 
 func _ready() -> void:
-	if not (_interact_area and _camera and _sub_viewport and _screen_mesh):
+	if not (_interact_area and _sub_viewport and _sub_viewport_container and _screen_mesh):
 		return
-	_screen_plane = Plane(_camera.global_basis.z, -_camera.global_position.z)
+	#_screen_plane = Plane(_camera.global_basis.z, -_camera.global_position.z)
 	_interact_area.interact_ray_entered.connect(_on_interact_area_ray_entered)
 	_interact_area.interact_ray_exited.connect(_on_interact_area_ray_exited)
 	_interact_area.interact_requested.connect(_on_interact_area_interact_requested)
-	var mat := StandardMaterial3D.new()
-	mat.albedo_texture = _sub_viewport.get_texture()
-	_screen_mesh.material_override = mat
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_pressed() and event is InputEventKey and event.keycode == KEY_ESCAPE and _player_using_screen:
+		exit()
+		get_viewport().set_input_as_handled()
 
 
 @rpc("reliable", "call_local")
 func turn_on() -> void:
 	if not _sub_viewport: return
 	_turned_on = true
-	_screen = load("uid://b4v2edubn7buh").instantiate() as ControlScreen
-	if _screen:
-		_sub_viewport.add_child(_screen)
+	var mat := StandardMaterial3D.new()
+	mat.albedo_texture = _sub_viewport.get_texture()
+	#mat.albedo_texture_force_srgb = true
+	mat.emission_enabled = true
+	#mat.emission = Color.WHITE
+	#mat.emission_texture = mat.albedo_texture
+	_screen_mesh.material_override = mat
+	if not _screen:
+		_screen = load("uid://b4v2edubn7buh").instantiate() as ControlScreen
+		if _screen:
+			_sub_viewport.add_child(_screen)
 
 
 @rpc("reliable", "call_local")
 func turn_off() -> void:
 	_turned_on = false
+	_screen_mesh.material_override = null
+
+
+func view() -> void:
+	if not (_sub_viewport and _sub_viewport_container and _sub_viewport.get_parent() != _sub_viewport_container\
+			and Globals.local_player): return
+	_player_using_screen = true
+	Globals.local_player.give_up_control()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	_sub_viewport.reparent(_sub_viewport_container)
+	_sub_viewport_container.show()
+	UI.hide()
+
+
+func exit() -> void:
+	if not (_sub_viewport and _sub_viewport_container and _sub_viewport.get_parent() != self\
+			and Globals.local_player): return
+	_player_using_screen = false
+	Globals.local_player.take_control()
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	_sub_viewport.reparent(self)
+	_sub_viewport_container.hide()
+	UI.show()
 
 
 func _on_interact_area_ray_entered(_player: Player) -> void:
-	UI.show_interact_prompt("View")
+	print("ray entered")
+	if _turned_on:
+		UI.show_interact_prompt("View")
 
 
 func _on_interact_area_ray_exited(_player: Player) -> void:
 	UI.hide_interact_prompt()
 
 
-func _on_interact_area_interact_requested(player: Player) -> void:
-	if _camera and _turned_on and not _player_using_screen:
-		_player_using_screen = true
-		player.give_up_control()
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		_camera.global_transform = player.camera.global_transform
-		var tween = create_tween().set_trans(Tween.TRANS_QUART)
-		tween.tween_property(_camera, "transform", Transform3D.IDENTITY, 0.3)
+func _on_interact_area_interact_requested(_player: Player) -> void:
+	if _turned_on and not _player_using_screen:
+		view()

@@ -42,6 +42,7 @@ func _ready() -> void:
 	if jump_timer:
 		jump_timer.timeout.connect(_on_jump_timer_timeout)
 	if is_multiplayer_authority():
+		Globals.local_player = self
 		take_control()
 	else:
 		set_physics_process(false)
@@ -90,7 +91,7 @@ func _physics_process(delta: float) -> void:
 		input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction := (global_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized() * SPEED
 	direction.y = velocity.y
-	velocity = velocity.move_toward(direction, delta * (20.0 if is_on_floor() else 5.0))
+	velocity = velocity.move_toward(direction, delta * SPEED * (2.5 if is_on_floor() else 0.8))
 	
 	# Head bob
 	_t_bob += delta * velocity.length() * float(is_on_floor())

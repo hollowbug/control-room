@@ -2,7 +2,7 @@ extends Node
 
 const RoomGenerator = preload("uid://bc204rjvbei42")
 const StartButton = preload("uid://vdx11c47or")
-const ControlRoomScreen = preload("uid://7qvord22my3h")
+const Screen3D = preload("uid://7qvord22my3h")
 const PLAYER_UID = "uid://54njlhvy4526"
 
 enum State { LOBBY, PLAYING }
@@ -45,7 +45,7 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_ESCAPE:
 		if UI.is_pause_menu_open():
 			UI.close_pause_menu()
@@ -71,25 +71,10 @@ func _return_to_menu() -> void:
 func _host_setup() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	SignalBus.door_open_requested.connect(_on_door_open_requested)
+	SignalBus.door_close_requested.connect(_on_door_close_requested)
 	_add_player()
 	%StartButton.pressed.connect(_start_round)
-
-
-func _on_peer_connected(id: int) -> void:
-	if _state == State.LOBBY:
-		_add_player(id)
-		if id not in _connected_players:
-			_connected_players.append(id)
-	elif id not in _spectators:
-		_spectators.append(id)
-
-
-func _on_peer_disconnected(id: int) -> void:
-	if _state == State.LOBBY or id in _living_players:
-		_remove_player(id)
-		_connected_players.erase(id)
-		if id not in _disconnected_players:
-			_disconnected_players.append(id)
 
 
 func _add_player(id := 1) -> void:
@@ -120,11 +105,41 @@ func _start_round() -> void:
 		var rot := player_spawn_markers[i].global_rotation
 		get_node(str(id)).set_global_transform_rpc.rpc_id(id, pos, rot)
 
+
+func _on_peer_connected(id: int) -> void:
+	if _state == State.LOBBY:
+		_add_player(id)
+		if id not in _connected_players:
+			_connected_players.append(id)
+	elif id not in _spectators:
+		_spectators.append(id)
+
+
+func _on_peer_disconnected(id: int) -> void:
+	if _state == State.LOBBY or id in _living_players:
+		_remove_player(id)
+		_connected_players.erase(id)
+		if id not in _disconnected_players:
+			_disconnected_players.append(id)
+
+
+func _on_door_open_requested(door: Door) -> void:
+	if not door.is_open and _current_power > 0:
+		_set_current_power.rpc(_current_power - 1)
+		door.open.rpc()
+
+
+func _on_door_close_requested(door: Door) -> void:
+	if door.is_open and _current_power > 0:
+		_set_current_power.rpc(_current_power - 1)
+		door.close.rpc()
+
+
 #endregion ///////////////////////////////////////////
 
 func _on_map_generation_finished() -> void:
 	## Setup the screen when the map is fully loaded
-	var screen := get_tree().get_first_node_in_group("screen") as ControlRoomScreen
+	var screen := get_tree().get_first_node_in_group("screen") as Screen3D
 	if screen:
 		screen.turn_on()
 	else:
