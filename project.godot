@@ -93,6 +93,8 @@ jump={
 
 [layer_names]
 
+3d_physics/layer_1="Environment"
+3d_physics/layer_2="Players"
 3d_physics/layer_9="InteractAreas"
 
 [rendering]

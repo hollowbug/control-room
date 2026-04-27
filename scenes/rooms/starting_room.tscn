@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_33dqs"]
 [ext_resource type="PackedScene" uid="uid://b1xa43sara815" path="res://scenes/floor_1x1.tscn" id="2_02uo2"]
 [ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_7e8gg"]
-[ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="2_e68di"]
 [ext_resource type="Script" uid="uid://7qvord22my3h" path="res://scripts/screen_3d.gd" id="3_suqah"]
 [ext_resource type="Material" uid="uid://1fuludytonj7" path="res://resources/material_black.tres" id="4_02uo2"]
 [ext_resource type="Script" uid="uid://dud36siiy6rkp" path="res://scripts/interact_area.gd" id="5_7e8gg"]
+[ext_resource type="PackedScene" uid="uid://5khrm74w6gnr" path="res://models/screen.glb" id="5_gc8kv"]
 [ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="8_0yuyw"]
 [ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="9_gc8kv"]
 
@@ -25,10 +25,6 @@ script = ExtResource("2_7e8gg")
 direction = Vector2i(0, 1)
 metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
 
-[sub_resource type="BoxMesh" id="BoxMesh_0yuyw"]
-material = ExtResource("2_e68di")
-size = Vector3(4, 2.338, 0.3)
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_gc8kv"]
 material = ExtResource("4_02uo2")
 size = Vector2(3.8, 2.138)
@@ -42,21 +38,21 @@ allowed_connections = Array[ExtResource("2_7e8gg")]([SubResource("Resource_0yuyw
 
 [node name="Floor1x1" parent="." unique_id=1879765563 instance=ExtResource("2_02uo2")]
 
-[node name="Screen" type="Node3D" parent="." unique_id=586685329 node_paths=PackedStringArray("_interact_area", "_sub_viewport", "_sub_viewport_container", "_screen_mesh") groups=["screen"]]
+[node name="Screen" type="Node3D" parent="." unique_id=586685329 node_paths=PackedStringArray("_interact_area", "_sub_viewport", "_sub_viewport_container", "_screen_mesh", "_screen_frame_mesh") groups=["screen"]]
 unique_name_in_owner = true
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -9.81, 2, 0)
 script = ExtResource("3_suqah")
 _interact_area = NodePath("InteractArea")
 _sub_viewport = NodePath("SubViewport")
 _sub_viewport_container = NodePath("SubViewportContainer")
-_screen_mesh = NodePath("MeshInstance3D/MeshInstance3D")
+_screen_mesh = NodePath("screen/MeshInstance3D")
+_screen_frame_mesh = NodePath("screen/Screen")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Screen" unique_id=316694880]
-mesh = SubResource("BoxMesh_0yuyw")
-skeleton = NodePath("../..")
+[node name="screen" parent="Screen" unique_id=1775811395 instance=ExtResource("5_gc8kv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.169, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Screen/MeshInstance3D" unique_id=29058582]
-transform = Transform3D(1, -4.371139e-08, 4.371139e-08, 4.371139e-08, -4.371139e-08, -1, 4.371139e-08, 1, -4.3711385e-08, 0, 0, 0.17424583)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Screen/screen" unique_id=29058582]
+transform = Transform3D(1, -4.371139e-08, 4.371139e-08, 4.371139e-08, -4.371139e-08, -1, 4.371139e-08, 1, -4.3711385e-08, 0, 1.169, 0.17424583)
 mesh = SubResource("PlaneMesh_gc8kv")
 skeleton = NodePath("../..")
 
@@ -92,3 +88,5 @@ size = Vector2i(1920, 1080)
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 
 [node name="CeilingLight" parent="." unique_id=1171493253 instance=ExtResource("9_gc8kv")]
+
+[editable path="Screen/screen"]

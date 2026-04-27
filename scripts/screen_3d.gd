@@ -7,10 +7,13 @@ const ControlScreen = preload("uid://c27xetfc8jtx6")
 @export var _sub_viewport: SubViewport
 @export var _sub_viewport_container: SubViewportContainer
 @export var _screen_mesh: MeshInstance3D
+@export var _screen_frame_mesh: MeshInstance3D
 #var _screen_plane: Plane
 var _turned_on := false
 var _player_using_screen := false
 var _screen: ControlScreen
+#var _material_white = preload("uid://vevkw7ptvn7n")
+var _material_white_outlined = preload("uid://blaiawgnvo4ud")
 
 
 func _ready() -> void:
@@ -28,16 +31,17 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-@rpc("reliable", "call_local")
+@rpc("call_local")
 func turn_on() -> void:
 	if not _sub_viewport: return
 	_turned_on = true
 	var mat := StandardMaterial3D.new()
 	mat.albedo_texture = _sub_viewport.get_texture()
 	#mat.albedo_texture_force_srgb = true
-	mat.emission_enabled = true
+	#mat.emission_enabled = true
 	#mat.emission = Color.WHITE
 	#mat.emission_texture = mat.albedo_texture
+	mat.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
 	_screen_mesh.material_override = mat
 	if not _screen:
 		_screen = load("uid://b4v2edubn7buh").instantiate() as ControlScreen
@@ -45,7 +49,7 @@ func turn_on() -> void:
 			_sub_viewport.add_child(_screen)
 
 
-@rpc("reliable", "call_local")
+@rpc("call_local")
 func turn_off() -> void:
 	_turned_on = false
 	_screen_mesh.material_override = null
@@ -77,10 +81,14 @@ func _on_interact_area_ray_entered(_player: Player) -> void:
 	print("ray entered")
 	if _turned_on:
 		UI.show_interact_prompt("View")
+		if _screen_frame_mesh:
+			_screen_frame_mesh.material_overlay = _material_white_outlined
 
 
 func _on_interact_area_ray_exited(_player: Player) -> void:
 	UI.hide_interact_prompt()
+	if _screen_frame_mesh:
+			_screen_frame_mesh.material_overlay = null
 
 
 func _on_interact_area_interact_requested(_player: Player) -> void:

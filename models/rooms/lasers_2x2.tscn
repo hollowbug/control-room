@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://lq3ikfse6o6i"]
+
+[ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_m8gev"]
+[ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_wipai"]
+[ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="3_ft1ps"]
+[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="4_avy4g"]
+[ext_resource type="PackedScene" uid="uid://bk6lv0p5uw6ir" path="res://scenes/laser.tscn" id="5_6g25k"]
+
+[sub_resource type="Resource" id="Resource_fttbu"]
+script = ExtResource("2_wipai")
+direction = Vector2i(-1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_aiyg7"]
+script = ExtResource("2_wipai")
+direction = Vector2i(0, -1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_gjb8l"]
+script = ExtResource("2_wipai")
+position = Vector2i(1, 0)
+direction = Vector2i(1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_r85wa"]
+script = ExtResource("2_wipai")
+position = Vector2i(1, 0)
+direction = Vector2i(0, -1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_g1ash"]
+script = ExtResource("2_wipai")
+position = Vector2i(0, 1)
+direction = Vector2i(-1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_k0cr4"]
+script = ExtResource("2_wipai")
+position = Vector2i(0, 1)
+direction = Vector2i(0, 1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_u2att"]
+script = ExtResource("2_wipai")
+position = Vector2i(1, 1)
+direction = Vector2i(1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_lo6lj"]
+script = ExtResource("2_wipai")
+position = Vector2i(1, 1)
+direction = Vector2i(0, 1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[node name="Lasers2x2" type="Node3D" unique_id=1179378168]
+script = ExtResource("1_m8gev")
+room_size = Vector2i(2, 2)
+allowed_connections = Array[ExtResource("2_wipai")]([SubResource("Resource_fttbu"), SubResource("Resource_aiyg7"), SubResource("Resource_gjb8l"), SubResource("Resource_r85wa"), SubResource("Resource_g1ash"), SubResource("Resource_k0cr4"), SubResource("Resource_u2att"), SubResource("Resource_lo6lj")])
+metadata/_custom_type_script = "uid://bk3jcsthcrnvf"
+
+[node name="Room" type="Node3D" parent="." unique_id=491468938]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Room" unique_id=549454639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -0.25, 11)
+use_collision = true
+size = Vector3(44, 0.5, 44)
+material = ExtResource("3_ft1ps")
+
+[node name="CeilingLight" parent="Room" unique_id=1171493253 instance=ExtResource("4_avy4g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 11)
+
+[node name="Laser" parent="." unique_id=239914294 instance=ExtResource("5_6g25k")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 8, 0.32520437, -9.8)
+
+[node name="Laser2" parent="." unique_id=1325553694 instance=ExtResource("5_6g25k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.325, 31.8)

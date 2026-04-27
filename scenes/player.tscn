@@ -20,6 +20,7 @@ properties/2/spawn = true
 properties/2/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" unique_id=1040616695 node_paths=PackedStringArray("interact_ray", "jump_timer")]
+collision_layer = 2
 script = ExtResource("1_3vyb7")
 interact_ray = NodePath("Head/Camera3D/RayCast3D")
 jump_timer = NodePath("JumpTimer")

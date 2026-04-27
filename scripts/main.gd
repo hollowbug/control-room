@@ -147,13 +147,13 @@ func _on_map_generation_finished() -> void:
 
 #region RPCs /////////////////////////////////////////
 
-@rpc("reliable", "call_local")
+@rpc("call_local")
 func _set_current_power(value: int) -> void:
 	_current_power = value
 	UI.set_current_power(value)
 
 
-@rpc("reliable", "call_local")
+@rpc("call_local")
 func _set_max_power(value: int) -> void:
 	_max_power = value
 	UI.set_max_power(value)

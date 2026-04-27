@@ -12,20 +12,20 @@ var _tween: Tween
 
 
 ## Call with RPC ID 1 to request opening the door
-@rpc("any_peer", "reliable", "call_local")
+@rpc("any_peer", "call_local")
 func request_open() -> void:
 	if not is_multiplayer_authority(): return
 	SignalBus.door_open_requested.emit(self)
 
 
 ## Call with RPC ID 1 to request closing the door
-@rpc("any_peer", "reliable", "call_local")
+@rpc("any_peer", "call_local")
 func request_close() -> void:
 	if not is_multiplayer_authority(): return
 	SignalBus.door_close_requested.emit(self)
 
 
-@rpc("reliable", "call_local")
+@rpc("call_local")
 func open() -> void:
 	if is_open: return
 	is_open = true
@@ -38,7 +38,7 @@ func open() -> void:
 	_tween.tween_property($Right, "position:x", 5, TWEEN_DURATION)
 
 
-@rpc("reliable", "call_local")
+@rpc("call_local")
 func close() -> void:
 	if not is_open: return
 	is_open = false

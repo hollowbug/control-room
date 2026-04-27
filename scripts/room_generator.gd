@@ -31,7 +31,7 @@ var _wall_with_door: PackedScene = load("uid://583hxvak04ds")
 var _room_scenes: Array[PackedScene] = [
 	load("uid://eu6u2228knpv"),
 	load("uid://bvy6smqlncnii"),
-	load("uid://wjt4kf7msqvd"),
+	load("uid://lq3ikfse6o6i"),
 ]
 var _directions: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
 var _grid: Dictionary[Vector2i, int]
@@ -213,7 +213,7 @@ func _spawn_node(node: Node) -> void:
 
 
 ## Called on remote peers to notify them that level generation started
-@rpc("reliable")
+@rpc
 func _start_generation(map_id: int, num_nodes: int) -> void:
 	map_index = map_id
 	if _num_nodes_spawned >= num_nodes:

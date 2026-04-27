@@ -29,6 +29,7 @@ var held_item_target_distance: float
 @export var jump_timer: Timer
 @export var player_control: bool
 @onready var camera: Camera3D = $Head/Camera3D
+var is_dead := false
 
 var _jumping := false
 
@@ -53,7 +54,10 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if not player_control or UI.is_pause_menu_open(): return
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
+		if is_dead:
+			camera.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
+		else:
+			rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
 		camera.rotation.x = clampf(camera.rotation.x, -deg_to_rad(CAMERA_MAX_PITCH_DEGREES), deg_to_rad(CAMERA_MAX_PITCH_DEGREES))
 
@@ -79,7 +83,7 @@ func _physics_process(delta: float) -> void:
 		velocity += Vector3.DOWN * (JUMP_GRAVITY if _jumping else FALL_GRAVITY) * delta
 
 	# Handle jump
-	elif Input.is_action_just_pressed("ui_accept"):
+	elif not is_dead and Input.is_action_just_pressed("ui_accept"):
 		if jump_timer:
 			jump_timer.start()
 			_jumping = true
@@ -87,15 +91,16 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement
 	var input_dir := Vector2()
-	if player_control and not UI.is_pause_menu_open():
+	if player_control and not is_dead and not UI.is_pause_menu_open():
 		input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction := (global_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized() * SPEED
 	direction.y = velocity.y
 	velocity = velocity.move_toward(direction, delta * SPEED * (2.5 if is_on_floor() else 0.8))
 	
 	# Head bob
-	_t_bob += delta * velocity.length() * float(is_on_floor())
-	camera.position = _head_bob(_t_bob)
+	if not is_dead:
+		_t_bob += delta * velocity.length() * float(is_on_floor())
+		camera.position = _head_bob(_t_bob)
 	
 	# FOV
 	var speed_ratio := minf(velocity.length(), SPEED * 2) / SPEED
@@ -105,12 +110,6 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_process_interact_ray()
 	_move_held_item(delta)
-
-
-@rpc("reliable", "any_peer", "call_local")
-func set_global_transform_rpc(pos: Vector3, rot: Vector3) -> void:
-	global_position = pos
-	global_rotation = rot
 
 
 func take_control() -> void:
@@ -186,3 +185,34 @@ func _move_held_item(_delta: float) -> void:
 
 func _on_jump_timer_timeout() -> void:
 	_jumping = false
+
+
+#region RPCs ///////////////////////////////////////////////////
+
+@rpc("any_peer", "call_local")
+func set_global_transform_rpc(pos: Vector3, rot: Vector3) -> void:
+	global_position = pos
+	global_rotation = rot
+
+
+@rpc("any_peer", "call_local")
+func die() -> void:
+	if is_dead: return
+	is_dead = true
+	if is_multiplayer_authority():
+		create_tween().tween_property(camera, "position", Vector3(0, 3, 3), 3.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		var target_basis: Basis
+		if velocity.slide(Vector3.UP).length() > 0.5:
+			target_basis = Basis(velocity.slide(Vector3.UP).normalized().rotated(Vector3.UP, PI * 0.5), PI * 0.5)
+		else:
+			target_basis = Basis(Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU), PI * 0.5)
+		_death_animation.rpc(target_basis)
+
+
+@rpc("call_local")
+func _death_animation(target_basis: Basis) -> void:
+	var tween = create_tween().set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_IN).set_parallel()
+	tween.tween_property($CollisionShape3D, "global_basis", target_basis, 0.3)
+	tween.tween_property($MeshInstance3D, "global_basis", target_basis, 0.3)
+
+#endregion
