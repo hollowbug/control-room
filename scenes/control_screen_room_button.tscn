@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://smfvgr0mbiy1"]
+
+[ext_resource type="Script" uid="uid://dkcl37srj8ro5" path="res://scripts/control_screen_room_button.gd" id="1_iqt5d"]
+[ext_resource type="Texture2D" uid="uid://brlvjiqy0mblm" path="res://textures/atlas.png" id="2_iqt5d"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lnvf4"]
+atlas = ExtResource("2_iqt5d")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4jenb"]
+atlas = ExtResource("2_iqt5d")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2b3g"]
+atlas = ExtResource("2_iqt5d")
+region = Rect2(0, 16, 16, 16)
+
+[node name="ControlScreenRoomButton" type="Node2D" unique_id=814966396]
+modulate = Color(0, 1, 0, 1)
+z_index = 10
+script = ExtResource("1_iqt5d")
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=2073051369]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = SubResource("AtlasTexture_lnvf4")
+texture_pressed = SubResource("AtlasTexture_4jenb")
+texture_hover = SubResource("AtlasTexture_q2b3g")
+stretch_mode = 5

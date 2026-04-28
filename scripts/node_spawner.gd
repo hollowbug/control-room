@@ -21,4 +21,6 @@ func _spawn_node(data: Variant) -> Node:
 		node.room_rotation = dict.get("room_rotation", 0)
 	if "id" in dict:
 		node.name = str(dict.id)
+	if node is Player:
+		node.color = dict.get("color", Color.WHITE)
 	return node

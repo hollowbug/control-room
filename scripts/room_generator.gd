@@ -33,7 +33,6 @@ var _room_scenes: Array[PackedScene] = [
 	load("uid://bvy6smqlncnii"),
 	load("uid://lq3ikfse6o6i"),
 ]
-var _directions: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
 var _grid: Dictionary[Vector2i, int]
 var _rooms: Array[Room]
 var _nodes: Array[Node]

@@ -4,6 +4,7 @@ const RoomGenerator = preload("uid://bc204rjvbei42")
 const StartButton = preload("uid://vdx11c47or")
 const Screen3D = preload("uid://7qvord22my3h")
 const PLAYER_UID = "uid://54njlhvy4526"
+const PLAYER_COLORS = [ Color.RED, Color.DEEP_SKY_BLUE, Color.GREEN, Color.HOT_PINK, Color.ORANGE ]
 
 enum State { LOBBY, PLAYING }
 
@@ -16,6 +17,7 @@ var _connected_players: Array[int] = [1]
 var _disconnected_players: Array[int]
 var _living_players: Array[int]
 var _spectators: Array[int]
+var _player_colors: Dictionary[int, Color] = { 1: PLAYER_COLORS[0] }
 var _state := State.LOBBY
 var _max_power := 10
 var _current_power: int
@@ -71,6 +73,8 @@ func _return_to_menu() -> void:
 func _host_setup() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	SignalBus.room_power_on_requested.connect(_on_room_power_on_requested)
+	SignalBus.room_power_off_requested.connect(_on_room_power_off_requested)
 	SignalBus.door_open_requested.connect(_on_door_open_requested)
 	SignalBus.door_close_requested.connect(_on_door_close_requested)
 	_add_player()
@@ -82,7 +86,8 @@ func _add_player(id := 1) -> void:
 		uid = PLAYER_UID,
 		id = id,
 		position = lobby_spawn_marker.global_position,
-		rotation = lobby_spawn_marker.global_rotation
+		rotation = lobby_spawn_marker.global_rotation,
+		color = _player_colors[id],
 	})
 
 
@@ -107,10 +112,17 @@ func _start_round() -> void:
 
 
 func _on_peer_connected(id: int) -> void:
+	_disconnected_players.erase(id)
+	if id not in _connected_players:
+		_connected_players.append(id)
+	
+	# Assign next available color when a new peer connects
+	if id not in _player_colors:
+		var color := mini(PLAYER_COLORS.size() - 1, _connected_players.size() + _disconnected_players.size() - 1)
+		_player_colors[id] = PLAYER_COLORS[color]
+	
 	if _state == State.LOBBY:
 		_add_player(id)
-		if id not in _connected_players:
-			_connected_players.append(id)
 	elif id not in _spectators:
 		_spectators.append(id)
 
@@ -121,6 +133,18 @@ func _on_peer_disconnected(id: int) -> void:
 		_connected_players.erase(id)
 		if id not in _disconnected_players:
 			_disconnected_players.append(id)
+
+
+func _on_room_power_on_requested(room: Room) -> void:
+	if not room.is_powered and _current_power > 0:
+		_set_current_power.rpc(_current_power - 1)
+		room.power_on.rpc()
+
+
+func _on_room_power_off_requested(room: Room) -> void:
+	if room.is_powered and _current_power > 0:
+		_set_current_power.rpc(_current_power - 1)
+		room.power_off.rpc()
 
 
 func _on_door_open_requested(door: Door) -> void:

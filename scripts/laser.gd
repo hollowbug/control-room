@@ -6,6 +6,11 @@ extends Node3D
 var turned_on := true
 
 
+func _ready() -> void:
+	if multiplayer.is_server():
+		anim_player.play("laser_1")
+
+
 func _physics_process(_delta: float) -> void:
 	if not ray_cast or not mesh_inst: return
 	var laser_length := ray_cast.target_position.length()

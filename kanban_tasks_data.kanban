@@ -11,24 +11,58 @@
 			"uuid": "384eb047-5b2e-4d07-8478-b7d608612e2e",
 			"title": "Todo",
 			"tasks": [
-				"c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8"
+				"c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8",
+				"0b749195-ea97-4f2d-b80a-d064692cdfd2"
 			]
 		},
 		{
 			"uuid": "0b0af853-6576-4b9b-b56a-b647ce5ec61a",
 			"title": "Doing",
-			"tasks": []
+			"tasks": [
+				"bd737cb5-b03e-45cf-8a17-73593b195edb",
+				"15906dd4-58fd-4901-a5af-8c1a98465051"
+			]
 		},
 		{
 			"uuid": "3c62e7b1-d9bd-4c47-9bff-691f998cb538",
 			"title": "Done",
-			"tasks": []
+			"tasks": [
+				"13e01cd3-c460-4cf9-96bd-d551116cdd4f"
+			]
 		}
 	],
 	"tasks": [
 		{
 			"uuid": "c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8",
 			"title": "Remember to not allow joining when versions don't match",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "13e01cd3-c460-4cf9-96bd-d551116cdd4f",
+			"title": "Room power buttons on screen",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "0b749195-ea97-4f2d-b80a-d064692cdfd2",
+			"title": "Spectating",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "bd737cb5-b03e-45cf-8a17-73593b195edb",
+			"title": "Turning on/off lasers",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "15906dd4-58fd-4901-a5af-8c1a98465051",
+			"title": "CCTV",
 			"description": "",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []

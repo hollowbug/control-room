@@ -81,6 +81,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="SubViewport" type="SubViewport" parent="Screen" unique_id=662942700]
+canvas_item_default_texture_filter = 0
 gui_snap_controls_to_pixels = false
 size = Vector2i(1920, 1080)
 

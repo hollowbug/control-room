@@ -1,6 +1,8 @@
 extends CharacterBody3D
 class_name Player
 
+signal died()
+
 const SPEED = 6.5
 const JUMP_VELOCITY = 4.0
 const JUMP_GRAVITY = -4.0
@@ -30,6 +32,7 @@ var held_item_target_distance: float
 @export var player_control: bool
 @onready var camera: Camera3D = $Head/Camera3D
 var is_dead := false
+var color: Color
 
 var _jumping := false
 
@@ -199,6 +202,7 @@ func set_global_transform_rpc(pos: Vector3, rot: Vector3) -> void:
 func die() -> void:
 	if is_dead: return
 	is_dead = true
+	died.emit()
 	if is_multiplayer_authority():
 		create_tween().tween_property(camera, "position", Vector3(0, 3, 3), 3.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		var target_basis: Basis

@@ -5,6 +5,7 @@
 [ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="3_ft1ps"]
 [ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="4_avy4g"]
 [ext_resource type="PackedScene" uid="uid://bk6lv0p5uw6ir" path="res://scenes/laser.tscn" id="5_6g25k"]
+[ext_resource type="Script" uid="uid://bk23d6a7qwmuj" path="res://scripts/rooms/laser_room.gd" id="6_ft1ps"]
 
 [sub_resource type="Resource" id="Resource_fttbu"]
 script = ExtResource("2_wipai")
@@ -74,3 +75,8 @@ transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 8, 0
 
 [node name="Laser2" parent="." unique_id=1325553694 instance=ExtResource("5_6g25k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.325, 31.8)
+
+[node name="LaserManager" type="Node" parent="." unique_id=1230302480 node_paths=PackedStringArray("room", "lasers")]
+script = ExtResource("6_ft1ps")
+room = NodePath("..")
+lasers = [NodePath("../Laser"), NodePath("../Laser2")]
