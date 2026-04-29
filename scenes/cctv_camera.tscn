@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://orine7kjqpy5"]
+
+[ext_resource type="PackedScene" uid="uid://5bmqps8rn4t3" path="res://models/camera_mount.glb" id="1_domk0"]
+[ext_resource type="Script" uid="uid://cl8f0wovahmny" path="res://scripts/cctv_camera.gd" id="1_guh6t"]
+[ext_resource type="PackedScene" uid="uid://0pfkv7g88w78" path="res://models/camera.glb" id="2_guh6t"]
+
+[node name="CCTVCamera" type="Node3D" unique_id=463506906 node_paths=PackedStringArray("camera") groups=["cctv_cameras"]]
+script = ExtResource("1_guh6t")
+camera = NodePath("camera/Camera3D")
+
+[node name="camera_mount" parent="." unique_id=1674484347 instance=ExtResource("1_domk0")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="camera" parent="." unique_id=2010973750 instance=ExtResource("2_guh6t")]
+transform = Transform3D(-1, -4.3283883e-08, 7.595557e-08, -2.262668e-08, 0.96736956, 0.25336963, -8.444392e-08, 0.25336963, -0.96736956, 0, 0, -0.025079563)
+
+[node name="Camera3D" type="Camera3D" parent="camera" unique_id=788751523]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.6675436e-08, 0, 1.1907448)

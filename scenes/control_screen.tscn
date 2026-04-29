@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c27xetfc8jtx6" path="res://scripts/control_screen.gd" id="1_l8rke"]
 [ext_resource type="Script" uid="uid://mhiesrb42cqw" path="res://scripts/mini_map.gd" id="2_b2wnj"]
-[ext_resource type="Texture2D" uid="uid://brlvjiqy0mblm" path="res://textures/atlas.png" id="3_ycxxt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixwfw"]
 content_margin_left = 16.0
@@ -10,10 +9,6 @@ content_margin_top = 16.0
 content_margin_right = 16.0
 content_margin_bottom = 16.0
 bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3ca67"]
-atlas = ExtResource("3_ycxxt")
-region = Rect2(16, 0, 7, 7)
 
 [node name="ControlScreen" type="CanvasLayer" unique_id=1744125494]
 script = ExtResource("1_l8rke")
@@ -54,16 +49,40 @@ grow_vertical = 2
 unique_name_in_owner = true
 z_index = 5
 script = ExtResource("2_b2wnj")
-_player_texture = SubResource("AtlasTexture_3ca67")
 
-[node name="SubViewportContainer2" type="SubViewportContainer" parent="MarginContainer/PanelContainer/HBoxContainer" unique_id=195249788]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/HBoxContainer" unique_id=1529094224]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="MarginContainer/PanelContainer/HBoxContainer/MarginContainer" unique_id=195249788]
 layout_mode = 2
 size_flags_horizontal = 3
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="MarginContainer/PanelContainer/HBoxContainer/SubViewportContainer2" unique_id=1116517688]
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/PanelContainer/HBoxContainer/MarginContainer/SubViewportContainer2" unique_id=1116517688]
 handle_input_locally = false
 size = Vector2i(936, 1048)
 render_target_update_mode = 4
 
-[node name="Camera3D" type="Camera3D" parent="MarginContainer/PanelContainer/HBoxContainer/SubViewportContainer2/SubViewport" unique_id=1032653703]
+[node name="Camera3D" type="Camera3D" parent="MarginContainer/PanelContainer/HBoxContainer/MarginContainer/SubViewportContainer2/SubViewport" unique_id=1032653703]
+unique_name_in_owner = true
+
+[node name="NoCameraFeed" type="ColorRect" parent="MarginContainer/PanelContainer/HBoxContainer/MarginContainer" unique_id=1117101250]
+unique_name_in_owner = true
+layout_mode = 2
+color = Color(0.13319641, 0.13319641, 0.13319638, 1)
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer/MarginContainer/NoCameraFeed" unique_id=868103131]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -22.5
+offset_right = 20.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "No Feed Available"

@@ -8,9 +8,9 @@ const PLAYER_COLORS = [ Color.RED, Color.DEEP_SKY_BLUE, Color.GREEN, Color.HOT_P
 
 enum State { LOBBY, PLAYING }
 
+#region host-only variables
 @export var player_spawn_markers: Array[Marker3D]
 @export var lobby_spawn_marker: Marker3D
-
 @onready var _room_generator: Node = $RoomGenerator
 @onready var _spawner: NodeSpawner = $NodeSpawner
 var _connected_players: Array[int] = [1]
@@ -19,6 +19,9 @@ var _living_players: Array[int]
 var _spectators: Array[int]
 var _player_colors: Dictionary[int, Color] = { 1: PLAYER_COLORS[0] }
 var _state := State.LOBBY
+var _current_cctv_camera: CCTVCamera
+#endregion
+
 var _max_power := 10
 var _current_power: int
 
@@ -77,6 +80,7 @@ func _host_setup() -> void:
 	SignalBus.room_power_off_requested.connect(_on_room_power_off_requested)
 	SignalBus.door_open_requested.connect(_on_door_open_requested)
 	SignalBus.door_close_requested.connect(_on_door_close_requested)
+	SignalBus.cctv_camera_change_requested.connect(_on_cctv_camera_change_requested)
 	_add_player()
 	%StartButton.pressed.connect(_start_round)
 
@@ -100,6 +104,7 @@ func _start_round() -> void:
 	print("Starting round")
 	_set_current_power.rpc(_max_power)
 	_living_players = _connected_players
+	_current_cctv_camera = null
 	_room_generator.generate_map()
 	
 	# Teleport players into the starting room
@@ -157,6 +162,16 @@ func _on_door_close_requested(door: Door) -> void:
 	if door.is_open and _current_power > 0:
 		_set_current_power.rpc(_current_power - 1)
 		door.close.rpc()
+
+
+func _on_cctv_camera_change_requested(new_camera: CCTVCamera) -> void:
+	if new_camera != _current_cctv_camera:
+		if new_camera.activated:
+			new_camera.select.rpc()
+		elif _current_power > 0:
+			_set_current_power.rpc(_current_power - 1)
+			new_camera.select.rpc()
+		
 
 
 #endregion ///////////////////////////////////////////

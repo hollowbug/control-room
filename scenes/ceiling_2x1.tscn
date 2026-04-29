@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://2cnd3uqpb6ux"]
+
+[ext_resource type="PackedScene" uid="uid://b2ic70oyt8cfy" path="res://models/rooms/ceiling_2x1.glb" id="1_phh1v"]
+[ext_resource type="PackedScene" uid="uid://orine7kjqpy5" path="res://scenes/cctv_camera.tscn" id="2_jr2js"]
+
+[node name="Ceiling2x1" type="Node3D" unique_id=1136617736]
+
+[node name="ceiling_2x1" parent="." unique_id=790760608 instance=ExtResource("1_phh1v")]
+
+[node name="CCTVCamera3" parent="." unique_id=463506906 instance=ExtResource("2_jr2js")]
+transform = Transform3D(-4.371139e-08, 0.882127, -0.47101188, 0, 0.47101188, 0.882127, 1, 3.8558994e-08, -2.0588582e-08, -9.454, 12.256, 0)
+
+[node name="CCTVCamera4" parent="." unique_id=1431024058 instance=ExtResource("2_jr2js")]
+transform = Transform3D(-4.371139e-08, -0.882127, 0.47101188, 0, 0.47101188, 0.882127, -1, 3.8558994e-08, -2.0588582e-08, 31.454, 12.256, 0)

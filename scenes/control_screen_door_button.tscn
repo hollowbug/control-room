@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bwivs6k02v0qm"]
 
 [ext_resource type="Script" uid="uid://bkug5p21t45qo" path="res://scripts/control_screen_door_button.gd" id="1_w1b6g"]
+[ext_resource type="Script" uid="uid://c2u1mvenyyp5k" path="res://scripts/hover_scale_button.gd" id="2_1aq1i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1aq1i"]
 
@@ -23,8 +24,10 @@ offset_right = 32.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_1aq1i")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5vj5s")
+script = ExtResource("2_1aq1i")
 
 [node name="MarginContainer" type="MarginContainer" parent="Button" unique_id=1788272517]
 layout_mode = 1

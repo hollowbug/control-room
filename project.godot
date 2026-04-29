@@ -45,6 +45,10 @@ run/main_run_args="--skip-menu"
 
 enabled=PackedStringArray("res://addons/kanban_tasks/plugin.cfg")
 
+[global_group]
+
+cctv_cameras=""
+
 [gui]
 
 theme/custom="uid://bb6jrkm0syfto"
@@ -99,6 +103,5 @@ jump={
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

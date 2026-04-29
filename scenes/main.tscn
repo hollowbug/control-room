@@ -22,9 +22,9 @@ size = Vector3(3.8, 1.8, 1)
 
 [sub_resource type="Environment" id="Environment_tipki"]
 background_mode = 1
-ambient_light_source = 1
+ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 0.1
+ambient_light_energy = 0.02
 
 [node name="Main" type="Node" unique_id=556756346 node_paths=PackedStringArray("player_spawn_markers", "lobby_spawn_marker")]
 script = ExtResource("1_0wfyh")

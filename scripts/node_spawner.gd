@@ -23,4 +23,11 @@ func _spawn_node(data: Variant) -> Node:
 		node.name = str(dict.id)
 	if node is Player:
 		node.color = dict.get("color", Color.WHITE)
+	if "camera_index" in dict:
+		var random_cam = dict.camera_index
+		var cameras: Array[Node3D]
+		cameras.assign(node.find_children("", "CCTVCamera"))
+		for c in cameras.size():
+			if c != random_cam:
+				cameras[c].queue_free()
 	return node

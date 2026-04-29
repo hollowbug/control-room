@@ -1,10 +1,11 @@
 extends Node2D
 
 var room: Room
+@onready var _button: TextureButton = $TextureButton
 
 
 func _ready() -> void:
-	$TextureButton.pressed.connect(_on_pressed)
+	_button.pressed.connect(_on_pressed)
 	if room:
 		room.powered_on.connect(_on_room_powered_on)
 		room.powered_off.connect(_on_room_powered_off)

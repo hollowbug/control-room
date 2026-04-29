@@ -4,13 +4,16 @@ const MINIMAP_MARGIN = 10.0
 const MiniMap = preload("uid://mhiesrb42cqw")
 const RoomButton = preload("uid://dkcl37srj8ro5")
 const DoorButton = preload("uid://bkug5p21t45qo")
+const CameraButton = preload("uid://ccyx5ywko1d5x")
 
 @onready var _mini_map: MiniMap = %MiniMap
 var _door_button_scene: PackedScene = load("uid://bwivs6k02v0qm")
 var _room_button_scene: PackedScene = load("uid://smfvgr0mbiy1")
+var _camera_button_scene: PackedScene = load("uid://dpluf5gt1ns8h")
 
 
 func _ready() -> void:
+	SignalBus.current_cctv_camera_changed.connect(_on_current_cctv_camera_changed)
 	# Wait for Controls to update their size
 	while %MiniMapContainer.size == Vector2.ZERO:
 		await get_tree().process_frame
@@ -93,3 +96,21 @@ func setup() -> void:
 		button.position = Vector2(door.global_position.x, door.global_position.z) * _mini_map.draw_scale
 		button.rotation = door.rotation.y
 		_mini_map.add_child(button)
+	
+	var cameras: Array[CCTVCamera]
+	cameras.assign(get_tree().get_nodes_in_group("cctv_cameras"))
+	for camera in cameras:
+		var button := _camera_button_scene.instantiate() as CameraButton
+		if not button: break
+		button.camera = camera
+		button.position = Vector2(camera.global_position.x, camera.global_position.z) * _mini_map.draw_scale
+		_mini_map.add_child(button)
+		button.global_rotation = 0
+
+
+func _on_current_cctv_camera_changed(new_camera: CCTVCamera) -> void:
+	if new_camera.camera:
+		%NoCameraFeed.hide()
+		%Camera3D.global_transform = new_camera.camera.global_transform
+	else:
+		%NoCameraFeed.show()

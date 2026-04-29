@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dpluf5gt1ns8h"]
+
+[ext_resource type="Script" uid="uid://ccyx5ywko1d5x" path="res://scripts/control_screen_camera_button.gd" id="1_k35vl"]
+[ext_resource type="Texture2D" uid="uid://boqilym406eqx" path="res://textures/camera_icon.png" id="2_d0621"]
+[ext_resource type="Script" uid="uid://c2u1mvenyyp5k" path="res://scripts/hover_scale_button.gd" id="3_l80gb"]
+
+[node name="ControlScreenCameraButton" type="Node2D" unique_id=814966396]
+modulate = Color(1, 0, 0, 1)
+z_index = 10
+script = ExtResource("1_k35vl")
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=2073051369]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -30.5
+offset_right = 21.0
+offset_bottom = 30.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_d0621")
+stretch_mode = 5
+script = ExtResource("3_l80gb")
