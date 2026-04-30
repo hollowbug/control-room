@@ -12,21 +12,23 @@
 			"title": "Todo",
 			"tasks": [
 				"c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8",
-				"0b749195-ea97-4f2d-b80a-d064692cdfd2"
+				"a1d9d369-cc7c-4b27-af3c-39acd372c515",
+				"6158348a-2b5e-495f-b414-221242ac42fa"
 			]
 		},
 		{
 			"uuid": "0b0af853-6576-4b9b-b56a-b647ce5ec61a",
 			"title": "Doing",
 			"tasks": [
-				"bd737cb5-b03e-45cf-8a17-73593b195edb",
-				"15906dd4-58fd-4901-a5af-8c1a98465051"
+				"0b749195-ea97-4f2d-b80a-d064692cdfd2"
 			]
 		},
 		{
 			"uuid": "3c62e7b1-d9bd-4c47-9bff-691f998cb538",
 			"title": "Done",
 			"tasks": [
+				"15906dd4-58fd-4901-a5af-8c1a98465051",
+				"bd737cb5-b03e-45cf-8a17-73593b195edb",
 				"13e01cd3-c460-4cf9-96bd-d551116cdd4f"
 			]
 		}
@@ -49,7 +51,7 @@
 		{
 			"uuid": "0b749195-ea97-4f2d-b80a-d064692cdfd2",
 			"title": "Spectating",
-			"description": "",
+			"description": "When a new player joins mid-round, the host sends an RPC telling them to be a spectator.\n\nWhen a player reconnects and their character is still alive, they resume playing.\n\nWhen a player reconnects and their character is dead, the host sends the spectate RPC.",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []
 		},
@@ -63,6 +65,20 @@
 		{
 			"uuid": "15906dd4-58fd-4901-a5af-8c1a98465051",
 			"title": "CCTV",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "a1d9d369-cc7c-4b27-af3c-39acd372c515",
+			"title": "Better UI",
+			"description": "Like a sleek progress bar for the power",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "6158348a-2b5e-495f-b414-221242ac42fa",
+			"title": "UI should stay visible when looking at screen (except crosshair)",
 			"description": "",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []

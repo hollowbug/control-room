@@ -2,6 +2,7 @@ extends Node2D
 
 var camera: CCTVCamera
 @onready var _button: TextureButton = $TextureButton
+@onready var _vision_sprite: Sprite2D = $Sprite2D
 
 
 func _ready() -> void:
@@ -16,6 +17,8 @@ func _on_pressed() -> void:
 
 func _on_current_cctv_camera_changed(new_camera: CCTVCamera) -> void:
 	if camera == new_camera:
-		modulate = Color.GREEN
-	elif modulate == Color.GREEN:
-		modulate = Color.DEEP_SKY_BLUE
+		_button.modulate = Color.GREEN
+		_vision_sprite.show()
+	elif _button.modulate == Color.GREEN:
+		_button.modulate = Color.DEEP_SKY_BLUE
+		_vision_sprite.hide()

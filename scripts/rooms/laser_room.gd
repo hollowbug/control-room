@@ -19,7 +19,7 @@ func _on_room_powered_on() -> void:
 	for laser in lasers:
 		if laser.anim_player:
 			if not (_tween and _tween.is_valid()):
-				_tween = create_tween()
+				_tween = create_tween().set_parallel()
 			_tween.tween_property(laser.anim_player, "speed_scale", 1.0, 1.0)
 
 
@@ -27,6 +27,6 @@ func _on_room_powered_off() -> void:
 	for laser in lasers:
 		if laser.anim_player:
 			if not (_tween and _tween.is_valid()):
-				_tween = create_tween()
+				_tween = create_tween().set_parallel()
 			_tween.tween_property(laser.anim_player, "speed_scale", 0.0, 1.0)
 	

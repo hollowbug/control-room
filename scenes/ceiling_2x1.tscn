@@ -7,8 +7,14 @@
 
 [node name="ceiling_2x1" parent="." unique_id=790760608 instance=ExtResource("1_phh1v")]
 
-[node name="CCTVCamera3" parent="." unique_id=463506906 instance=ExtResource("2_jr2js")]
-transform = Transform3D(-4.371139e-08, 0.882127, -0.47101188, 0, 0.47101188, 0.882127, 1, 3.8558994e-08, -2.0588582e-08, -9.454, 12.256, 0)
+[node name="CCTVCamera" parent="." unique_id=463506906 instance=ExtResource("2_jr2js")]
+transform = Transform3D(0.38537458, -0.81399167, 0.43463102, 0, 0.47101188, 0.882127, -0.9227601, -0.33994937, 0.18151604, 31.428, 12.187, 9.428)
 
-[node name="CCTVCamera4" parent="." unique_id=1431024058 instance=ExtResource("2_jr2js")]
-transform = Transform3D(-4.371139e-08, -0.882127, 0.47101188, 0, 0.47101188, 0.882127, -1, 3.8558994e-08, -2.0588582e-08, 31.454, 12.256, 0)
+[node name="CCTVCamera2" parent="." unique_id=2063453681 instance=ExtResource("2_jr2js")]
+transform = Transform3D(-0.37945616, -0.81615245, 0.4357847, 0, 0.47101188, 0.88212687, -0.9252096, 0.33472857, -0.17872837, 31.428, 12.187, -9.428)
+
+[node name="CCTVCamera3" parent="." unique_id=881445118 instance=ExtResource("2_jr2js")]
+transform = Transform3D(-0.38537452, 0.81399167, -0.434631, -1.3750197e-08, 0.47101188, 0.882127, 0.9227601, 0.33994934, -0.18151596, -9.428, 12.187, -9.428)
+
+[node name="CCTVCamera4" parent="." unique_id=675841401 instance=ExtResource("2_jr2js")]
+transform = Transform3D(0.37945628, 0.8161524, -0.43578467, -1.3786697e-08, 0.47101194, 0.882127, 0.92520964, -0.33472866, 0.17872846, -9.428, 12.187, 9.428)

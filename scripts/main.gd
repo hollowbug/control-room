@@ -24,6 +24,7 @@ var _current_cctv_camera: CCTVCamera
 
 var _max_power := 10
 var _current_power: int
+var _spectating := false
 
 
 func _ready() -> void:
@@ -128,8 +129,11 @@ func _on_peer_connected(id: int) -> void:
 	
 	if _state == State.LOBBY:
 		_add_player(id)
-	elif id not in _spectators:
-		_spectators.append(id)
+	else:
+		if id not in _spectators:
+			_spectators.append(id)
+		if id not in _living_players:
+			_become_spectator.rpc_id(id)
 
 
 func _on_peer_disconnected(id: int) -> void:
@@ -196,5 +200,12 @@ func _set_current_power(value: int) -> void:
 func _set_max_power(value: int) -> void:
 	_max_power = value
 	UI.set_max_power(value)
+
+
+## Called on clients that join mid-round
+@rpc()
+func _become_spectator() -> void:
+	pass
+	
 
 #endregion ///////////////////////////////////////////

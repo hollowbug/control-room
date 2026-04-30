@@ -78,7 +78,6 @@ func exit() -> void:
 
 
 func _on_interact_area_ray_entered(_player: Player) -> void:
-	print("ray entered")
 	if _turned_on:
 		UI.show_interact_prompt("View")
 		if _screen_frame_mesh:

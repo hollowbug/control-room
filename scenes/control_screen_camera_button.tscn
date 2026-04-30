@@ -3,13 +3,14 @@
 [ext_resource type="Script" uid="uid://ccyx5ywko1d5x" path="res://scripts/control_screen_camera_button.gd" id="1_k35vl"]
 [ext_resource type="Texture2D" uid="uid://boqilym406eqx" path="res://textures/camera_icon.png" id="2_d0621"]
 [ext_resource type="Script" uid="uid://c2u1mvenyyp5k" path="res://scripts/hover_scale_button.gd" id="3_l80gb"]
+[ext_resource type="Texture2D" uid="uid://ub4c1mpl6jxn" path="res://textures/map_player_cone.png" id="4_d0621"]
 
 [node name="ControlScreenCameraButton" type="Node2D" unique_id=814966396]
-modulate = Color(1, 0, 0, 1)
-z_index = 10
+z_index = -5
 script = ExtResource("1_k35vl")
 
 [node name="TextureButton" type="TextureButton" parent="." unique_id=2073051369]
+modulate = Color(1, 0, 0, 1)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -25,3 +26,10 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture_normal = ExtResource("2_d0621")
 stretch_mode = 5
 script = ExtResource("3_l80gb")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2040935013]
+visible = false
+z_index = -5
+position = Vector2(270, 0)
+scale = Vector2(4, 4)
+texture = ExtResource("4_d0621")

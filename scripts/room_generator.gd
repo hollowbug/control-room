@@ -44,7 +44,6 @@ var _num_nodes_spawned := 0
 
 
 func _ready() -> void:
-	print(rad_to_deg(-0.065))
 	if spawner:
 		spawner.spawned.connect(_on_spawner_node_spawned)
 
@@ -52,7 +51,7 @@ func _ready() -> void:
 func generate_map() -> void:
 	map_index += 1
 	
-	print("\n==== STARTING GENERATION ====\n")
+	#print("\n==== STARTING GENERATION ====\n")
 	
 	# Cleanup
 	for node in _nodes:
@@ -146,15 +145,18 @@ func generate_map() -> void:
 		if room.room_size in _ceilings:
 			var ceiling: Node3D = _ceilings[room.room_size].instantiate()
 			ceiling.transform = room.transform
-			# Keep one random camera per room
+			
+			# Keep one random camera per room, none in starting room
 			var cameras: Array[Node3D]
 			cameras.assign(ceiling.find_children("", "CCTVCamera"))
-			if cameras:
-				var random_cam := randi() % cameras.size()
-				ceiling.set_meta("camera_index", random_cam)
-				for c in cameras.size():
-					if c != random_cam:
-						cameras[c].queue_free()
+			var random_cam := -1
+			if cameras and not room.is_in_group("starting_room"):
+				random_cam = randi() % cameras.size()
+			ceiling.set_meta("camera_index", random_cam)
+			for c in cameras.size():
+				if c != random_cam:
+					cameras[c].queue_free()
+			
 			_spawn_node(ceiling)
 	
 	if _grid.size() < room_count:

@@ -27,25 +27,38 @@ func setup() -> void:
 	
 	# Calculate the map size
 	var used_rect := Rect2()
+	var map_rotation := 0
 	for room in rooms:
 		for x in room.room_size.x:
 			for y in room.room_size.y:
 				var rotated := Utils.rotate_vector2i(Vector2i(x,y), room.room_rotation)
 				used_rect = used_rect.expand(room.grid_position + rotated)
 		if room.is_in_group("starting_room"):
-			%MiniMapPivot.rotation = room.rotation.y + PI * 0.5
+			map_rotation = room.room_rotation
 	used_rect.size += Vector2.ONE
 	used_rect.position += Vector2.ONE * -0.5
+	
+	#var used_rect_rotated := 
+	
+	# Center map
+	var map_center := used_rect.position + used_rect.size * 0.5
+	
+	prints("Used rect:", used_rect)
+	prints("Map center:", map_center)
+	prints("Minimap pos:", _mini_map.position)
+	
+	# Rotate map
+	%MiniMapPivot.rotation = -(map_rotation - 1) * PI * 0.5
+	if map_rotation % 2 == 0:
+		used_rect.size = Vector2(used_rect.size.y, used_rect.size.x)
 	var size_with_margin = %MiniMapContainer.size - Vector2.ONE * MINIMAP_MARGIN
 	_mini_map.draw_scale = minf(
-	#_mini_map.scale = minf(
 		size_with_margin.x / (used_rect.size.x * Globals.CELL_SIZE),
 		size_with_margin.y / (used_rect.size.y * Globals.CELL_SIZE)
-	)# * Vector2.ONE
-	var map_center := Vector2(used_rect.position) + Vector2(used_rect.size) * 0.5
+	)
 	_mini_map.position = -map_center * Globals.CELL_SIZE * _mini_map.draw_scale
 	
-	# Generate minimap
+	# Generate room rects and buttons
 	#var i = 0
 	for room in rooms:
 		var pivot := Node2D.new()
@@ -56,7 +69,7 @@ func setup() -> void:
 		color_rect.position = Vector2(-0.5, -0.5) * (Globals.CELL_SIZE - Globals.CELL_MARGIN * 2) * _mini_map.draw_scale
 		color_rect.color = Color(1,1,1,0.5)
 		color_rect.size = (Vector2(room.room_size) * Globals.CELL_SIZE - Vector2.ONE * Globals.CELL_MARGIN * 2) * _mini_map.draw_scale
-		color_rect.z_index = -3
+		color_rect.z_index = -10
 		pivot.add_child(color_rect)
 		
 		#color_rect = ColorRect.new()
@@ -94,7 +107,7 @@ func setup() -> void:
 		if not button: break
 		button.door = door
 		button.position = Vector2(door.global_position.x, door.global_position.z) * _mini_map.draw_scale
-		button.rotation = door.rotation.y
+		button.rotation = -door.global_rotation.y
 		_mini_map.add_child(button)
 	
 	var cameras: Array[CCTVCamera]
@@ -103,9 +116,10 @@ func setup() -> void:
 		var button := _camera_button_scene.instantiate() as CameraButton
 		if not button: break
 		button.camera = camera
-		button.position = Vector2(camera.global_position.x, camera.global_position.z) * _mini_map.draw_scale
+		var camera_map_pos := camera.global_position - camera.global_basis.z.slide(Vector3.UP).normalized()
+		button.position = Vector2(camera_map_pos.x, camera_map_pos.z) * _mini_map.draw_scale
+		button.rotation = -camera.global_rotation.y - PI * 0.5
 		_mini_map.add_child(button)
-		button.global_rotation = 0
 
 
 func _on_current_cctv_camera_changed(new_camera: CCTVCamera) -> void:
