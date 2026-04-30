@@ -24,12 +24,13 @@ var _current_cctv_camera: CCTVCamera
 
 var _max_power := 10
 var _current_power: int
-var _spectating := false
+var _currently_spectated_player: Player
 
 
 func _ready() -> void:
 	UI.show()
 	_room_generator.map_generation_finished.connect(_on_map_generation_finished)
+	SignalBus.player_died.connect(_on_player_died)
 	match MultiplayerManager.mode:
 		MultiplayerManager.Mode.SINGLE_PLAYER:
 			_host_setup()
@@ -103,8 +104,10 @@ func _remove_player(id: int) -> void:
 
 func _start_round() -> void:
 	print("Starting round")
+	_state = State.PLAYING
 	_set_current_power.rpc(_max_power)
-	_living_players = _connected_players
+	_living_players = _connected_players.duplicate()
+	_spectators.clear()
 	_current_cctv_camera = null
 	_room_generator.generate_map()
 	
@@ -129,19 +132,18 @@ func _on_peer_connected(id: int) -> void:
 	
 	if _state == State.LOBBY:
 		_add_player(id)
-	else:
+	elif id not in _living_players:
+		_become_spectator.rpc_id(id)
 		if id not in _spectators:
 			_spectators.append(id)
-		if id not in _living_players:
-			_become_spectator.rpc_id(id)
 
 
 func _on_peer_disconnected(id: int) -> void:
-	if _state == State.LOBBY or id in _living_players:
+	_connected_players.erase(id)
+	if id not in _disconnected_players:
+		_disconnected_players.append(id)
+	if _state == State.LOBBY:
 		_remove_player(id)
-		_connected_players.erase(id)
-		if id not in _disconnected_players:
-			_disconnected_players.append(id)
 
 
 func _on_room_power_on_requested(room: Room) -> void:
@@ -188,6 +190,23 @@ func _on_map_generation_finished() -> void:
 	else:
 		printerr("Screen not found")
 
+
+func _on_player_died(player: Player) -> void:
+	# Start spectating when you die
+	if player == Globals.local_player:
+		_cycle_spectated_player()
+
+
+func _cycle_spectated_player(backwards := false) -> void:
+	var players := get_tree().get_nodes_in_group("players")
+	var index := 0
+	if _currently_spectated_player:
+		index = (players.find(_currently_spectated_player) + (-1 if backwards else 1) % players.size())
+	_currently_spectated_player = players[index]
+	_currently_spectated_player.camera.make_current()
+	UI.set_spectated_player(int(_currently_spectated_player.name))
+	
+
 #region RPCs /////////////////////////////////////////
 
 @rpc("call_local")
@@ -205,7 +224,9 @@ func _set_max_power(value: int) -> void:
 ## Called on clients that join mid-round
 @rpc()
 func _become_spectator() -> void:
-	pass
+	print("_become_spectator() called")
+	_on_map_generation_finished()
+	_cycle_spectated_player()
 	
 
 #endregion ///////////////////////////////////////////

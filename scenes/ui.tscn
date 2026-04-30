@@ -23,6 +23,23 @@ text = "[E] Interact"
 fit_content = true
 autowrap_mode = 0
 
+[node name="LabelSpectating" type="Label" parent="." unique_id=1182018863]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -267.5
+offset_top = -217.5
+offset_right = 267.5
+offset_bottom = -129.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "Spectating Player"
+horizontal_alignment = 1
+
 [node name="Crosshair" type="Control" parent="." unique_id=323996663]
 layout_mode = 3
 anchors_preset = 8

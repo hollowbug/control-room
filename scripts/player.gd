@@ -28,7 +28,7 @@ var held_item_target_distance: float
 
 @export var jump_timer: Timer
 @export var player_control: bool
-@onready var camera: Camera3D = $Head/Camera3D
+@export var camera: Camera3D
 var is_dead := false
 var color: Color
 
@@ -47,7 +47,7 @@ func _ready() -> void:
 		Globals.local_player = self
 		take_control()
 	else:
-		set_physics_process(false)
+		#set_physics_process(false)
 		if interact_ray:
 			interact_ray.enabled = false
 
@@ -75,8 +75,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not player_control: return
-	
 	# Add gravity
 	if not is_on_floor():
 		if _jumping and not Input.is_action_pressed("jump"):

@@ -8,6 +8,7 @@ func _ready() -> void:
 	hide()
 	hide_interact_prompt()
 	close_pause_menu()
+	set_spectated_player(-1)
 
 
 func show_crosshair() -> void:
@@ -36,6 +37,14 @@ func set_current_power(value: int) -> void:
 
 func set_max_power(value: int) -> void:
 	%LabelMaxPower.text = str(value)
+
+
+func set_spectated_player(id: int) -> void:
+	if id < 1:
+		%LabelSpectating.hide()
+	else:
+		%LabelSpectating.show()
+		%LabelSpectating.text = "Spectating %d" % id
 
 
 func open_pause_menu() -> void:

@@ -67,7 +67,7 @@ func setup() -> void:
 		
 		var color_rect := ColorRect.new()
 		color_rect.position = Vector2(-0.5, -0.5) * (Globals.CELL_SIZE - Globals.CELL_MARGIN * 2) * _mini_map.draw_scale
-		color_rect.color = Color(1,1,1,0.5)
+		color_rect.color = Color(1,1,1,0.2)
 		color_rect.size = (Vector2(room.room_size) * Globals.CELL_SIZE - Vector2.ONE * Globals.CELL_MARGIN * 2) * _mini_map.draw_scale
 		color_rect.z_index = -10
 		pivot.add_child(color_rect)

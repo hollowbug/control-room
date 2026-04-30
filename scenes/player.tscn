@@ -18,12 +18,16 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath("Head:rotation")
 properties/2/spawn = true
 properties/2/replication_mode = 1
+properties/3/path = NodePath(".:velocity")
+properties/3/spawn = true
+properties/3/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" unique_id=1040616695 node_paths=PackedStringArray("interact_ray", "jump_timer") groups=["players"]]
+[node name="Player" type="CharacterBody3D" unique_id=1040616695 node_paths=PackedStringArray("interact_ray", "jump_timer", "camera") groups=["players"]]
 collision_layer = 2
 script = ExtResource("1_3vyb7")
 interact_ray = NodePath("Head/Camera3D/RayCast3D")
 jump_timer = NodePath("JumpTimer")
+camera = NodePath("Head/Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1290878115]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -51,7 +51,7 @@
 		{
 			"uuid": "0b749195-ea97-4f2d-b80a-d064692cdfd2",
 			"title": "Spectating",
-			"description": "When a new player joins mid-round, the host sends an RPC telling them to be a spectator.\n\nWhen a player reconnects and their character is still alive, they resume playing.\n\nWhen a player reconnects and their character is dead, the host sends the spectate RPC.",
+			"description": "When a new player joins mid-round, the host sends an RPC telling them to be a spectator.\n\nWhen a player reconnects and their character is still alive, they resume playing.\n\nWhen a player reconnects and their character is dead, the host sends the spectate RPC.\n\nSet _currently_spectated_player to null when round ends and call UI.set_spectated_player(-1)",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []
 		},
