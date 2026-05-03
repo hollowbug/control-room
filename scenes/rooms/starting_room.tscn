@@ -1,14 +1,13 @@
 [gd_scene format=3 uid="uid://7bs7c7wvcu1d"]
 
 [ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_33dqs"]
-[ext_resource type="PackedScene" uid="uid://b1xa43sara815" path="res://scenes/floor_1x1.tscn" id="2_02uo2"]
+[ext_resource type="PackedScene" uid="uid://b1xa43sara815" path="res://scenes/room_parts/floor_1x1.tscn" id="2_02uo2"]
 [ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_7e8gg"]
-[ext_resource type="Script" uid="uid://7qvord22my3h" path="res://scripts/screen_3d.gd" id="3_suqah"]
-[ext_resource type="Material" uid="uid://1fuludytonj7" path="res://resources/material_black.tres" id="4_02uo2"]
+[ext_resource type="Script" uid="uid://7qvord22my3h" path="res://scripts/game_objects/screen_3d.gd" id="3_suqah"]
 [ext_resource type="Script" uid="uid://dud36siiy6rkp" path="res://scripts/interact_area.gd" id="5_7e8gg"]
 [ext_resource type="PackedScene" uid="uid://5khrm74w6gnr" path="res://models/screen.glb" id="5_gc8kv"]
 [ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="8_0yuyw"]
-[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="9_gc8kv"]
+[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/game_objects/ceiling_light.tscn" id="9_gc8kv"]
 
 [sub_resource type="Resource" id="Resource_0yuyw"]
 script = ExtResource("2_7e8gg")
@@ -25,8 +24,12 @@ script = ExtResource("2_7e8gg")
 direction = Vector2i(0, 1)
 metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0yuyw"]
+depth_draw_mode = 2
+albedo_color = Color(0, 0, 0, 1)
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_gc8kv"]
-material = ExtResource("4_02uo2")
+material = SubResource("StandardMaterial3D_0yuyw")
 size = Vector2(3.8, 2.138)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5vbr4"]

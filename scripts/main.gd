@@ -22,8 +22,8 @@ var _state := State.LOBBY
 var _current_cctv_camera: CCTVCamera
 #endregion
 
-var _max_power := 10
-var _current_power: int
+var _current_power := 10
+var _screen: Screen3D.ControlScreen
 var _currently_spectated_player: Player
 
 
@@ -62,6 +62,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	elif event.is_action_pressed("reset") and MultiplayerManager.mode == MultiplayerManager.Mode.SINGLE_PLAYER:
 		get_tree().reload_current_scene()
+	elif event.is_action_pressed("spectate_next") and _currently_spectated_player:
+		print("Spectate next pressed")
+		_cycle_spectated_player()
+	elif event.is_action_pressed("spectate_previous") and _currently_spectated_player:
+		print("Spectate previous pressed")
+		_cycle_spectated_player(true)
 
 
 func _client_setup() -> void:
@@ -83,6 +89,7 @@ func _host_setup() -> void:
 	SignalBus.door_open_requested.connect(_on_door_open_requested)
 	SignalBus.door_close_requested.connect(_on_door_close_requested)
 	SignalBus.cctv_camera_change_requested.connect(_on_cctv_camera_change_requested)
+	SignalBus.battery_collected.connect(_on_battery_collected)
 	_add_player()
 	%StartButton.pressed.connect(_start_round)
 
@@ -105,7 +112,7 @@ func _remove_player(id: int) -> void:
 func _start_round() -> void:
 	print("Starting round")
 	_state = State.PLAYING
-	_set_current_power.rpc(_max_power)
+	#_set_current_power.rpc(_max_power)
 	_living_players = _connected_players.duplicate()
 	_spectators.clear()
 	_current_cctv_camera = null
@@ -133,7 +140,7 @@ func _on_peer_connected(id: int) -> void:
 	if _state == State.LOBBY:
 		_add_player(id)
 	elif id not in _living_players:
-		_become_spectator.rpc_id(id)
+		_set_current_round_state.rpc_id(id, _current_power)
 		if id not in _spectators:
 			_spectators.append(id)
 
@@ -177,7 +184,10 @@ func _on_cctv_camera_change_requested(new_camera: CCTVCamera) -> void:
 		elif _current_power > 0:
 			_set_current_power.rpc(_current_power - 1)
 			new_camera.select.rpc()
-		
+
+
+func _on_battery_collected(_battery: Area3D) -> void:
+	_set_current_power.rpc(_current_power + 1)		
 
 
 #endregion ///////////////////////////////////////////
@@ -187,6 +197,9 @@ func _on_map_generation_finished() -> void:
 	var screen := get_tree().get_first_node_in_group("screen") as Screen3D
 	if screen:
 		screen.turn_on()
+		_screen = screen.screen
+		if _screen:
+			_screen.set_current_power(_current_power)
 	else:
 		printerr("Screen not found")
 
@@ -194,14 +207,14 @@ func _on_map_generation_finished() -> void:
 func _on_player_died(player: Player) -> void:
 	# Start spectating when you die
 	if player == Globals.local_player:
-		_cycle_spectated_player()
+		_currently_spectated_player = player
 
 
 func _cycle_spectated_player(backwards := false) -> void:
 	var players := get_tree().get_nodes_in_group("players")
 	var index := 0
 	if _currently_spectated_player:
-		index = (players.find(_currently_spectated_player) + (-1 if backwards else 1) % players.size())
+		index = posmod(players.find(_currently_spectated_player) + (-1 if backwards else 1), players.size())
 	_currently_spectated_player = players[index]
 	_currently_spectated_player.camera.make_current()
 	UI.set_spectated_player(int(_currently_spectated_player.name))
@@ -212,19 +225,22 @@ func _cycle_spectated_player(backwards := false) -> void:
 @rpc("call_local")
 func _set_current_power(value: int) -> void:
 	_current_power = value
-	UI.set_current_power(value)
+	#UI.set_current_power(value)
+	if _screen:
+		_screen.set_current_power(_current_power)
 
 
-@rpc("call_local")
-func _set_max_power(value: int) -> void:
-	_max_power = value
-	UI.set_max_power(value)
+#@rpc("call_local")
+#func _set_max_power(value: int) -> void:
+	#_max_power = value
+	#UI.set_max_power(value)
 
 
 ## Called on clients that join mid-round
 @rpc()
-func _become_spectator() -> void:
+func _set_current_round_state(power: int) -> void:
 	print("_become_spectator() called")
+	_set_current_power(power)
 	_on_map_generation_finished()
 	_cycle_spectated_player()
 	

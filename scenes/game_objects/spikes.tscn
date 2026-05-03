@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://tndotriiytk1"]
+
+[ext_resource type="Script" uid="uid://rs7qkoichw5o" path="res://scripts/game_objects/spikes.gd" id="1_alecg"]
+[ext_resource type="Material" uid="uid://1fuludytonj7" path="res://resources/material_black.tres" id="2_n6a37"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_alecg"]
+material = ExtResource("2_n6a37")
+top_radius = 0.0
+bottom_radius = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sfidv"]
+resource_local_to_scene = true
+size = Vector3(4, 2, 4)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_alecg"]
+resource_local_to_scene = true
+material = ExtResource("2_n6a37")
+size = Vector2(4, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_alecg"]
+resource_local_to_scene = true
+size = Vector3(4, 1, 4)
+
+[node name="Spikes" type="Area3D" unique_id=983893958 node_paths=PackedStringArray("coll_shapes", "bottom_mesh")]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_alecg")
+spike_mesh = SubResource("CylinderMesh_alecg")
+coll_shapes = [NodePath("CollisionShape3D"), NodePath("StaticBody3D/CollisionShape3D")]
+bottom_mesh = NodePath("MeshInstance3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1048762081]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_sfidv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=303890591]
+mesh = SubResource("PlaneMesh_alecg")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1633005264]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2004053236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48216975, 0)
+shape = SubResource("BoxShape3D_alecg")

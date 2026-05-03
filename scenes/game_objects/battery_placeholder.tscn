@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dwi3phhd7r56s"]
+
+[ext_resource type="Script" uid="uid://cgvcw4olwoh22" path="res://scripts/placeholder.gd" id="1_n2m1r"]
+[ext_resource type="PackedScene" uid="uid://b3qn0ded58ahw" path="res://models/battery.glb" id="2_tbgje"]
+
+[node name="BatteryPlaceholder" type="Node3D" unique_id=347901332 groups=["battery_placeholders"]]
+script = ExtResource("1_n2m1r")
+
+[node name="battery" parent="." unique_id=574446694 instance=ExtResource("2_tbgje")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.58185256, 0)

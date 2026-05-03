@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://2cnd3uqpb6ux"]
 
 [ext_resource type="PackedScene" uid="uid://b2ic70oyt8cfy" path="res://models/rooms/ceiling_2x1.glb" id="1_phh1v"]
-[ext_resource type="PackedScene" uid="uid://orine7kjqpy5" path="res://scenes/cctv_camera.tscn" id="2_jr2js"]
+[ext_resource type="PackedScene" uid="uid://orine7kjqpy5" path="res://scenes/game_objects/cctv_camera.tscn" id="2_jr2js"]
 
 [node name="Ceiling2x1" type="Node3D" unique_id=1136617736]
 

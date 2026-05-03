@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cc6r5onrfb8ko"
-path.s3tc="res://.godot/imported/power_icon.png-81b08887625a3dfc57c39d6ec674d10e.s3tc.ctex"
+uid="uid://43qybcfrjrg1"
+path.s3tc="res://.godot/imported/battery_battery.png-c732caaf87d4d6f2e222b6ff21538e2c.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "33913088dbe29dd269f470274d78a0ef"
+}
 
 [deps]
 
-source_file="res://textures/power_icon.png"
-dest_files=["res://.godot/imported/power_icon.png-81b08887625a3dfc57c39d6ec674d10e.s3tc.ctex"]
+source_file="res://models/battery_battery.png"
+dest_files=["res://.godot/imported/battery_battery.png-c732caaf87d4d6f2e222b6ff21538e2c.s3tc.ctex"]
 
 [params]
 

@@ -32,11 +32,13 @@ func hide_interact_prompt() -> void:
 
 
 func set_current_power(value: int) -> void:
-	%LabelCurrentPower.text = str(value)
+	#%LabelCurrentPower.text = str(value)
+	pass
 
 
 func set_max_power(value: int) -> void:
-	%LabelMaxPower.text = str(value)
+	#%LabelMaxPower.text = str(value)
+	pass
 
 
 func set_spectated_player(id: int) -> void:

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://cmqe6rq82e3mv"]
+
+[ext_resource type="Script" uid="uid://bbu7dludli67i" path="res://scripts/game_objects/battery.gd" id="1_ioqdl"]
+[ext_resource type="PackedScene" uid="uid://b3qn0ded58ahw" path="res://models/battery.glb" id="2_gmq5s"]
+[ext_resource type="Texture2D" uid="uid://cc6r5onrfb8ko" path="res://textures/power_icon.png" id="3_j407i"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jo1xs"]
+radius = 0.43421403
+
+[sub_resource type="Gradient" id="Gradient_po1ip"]
+colors = PackedColorArray(0, 1, 0, 1, 0, 1, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7fgwr"]
+gradient = SubResource("Gradient_po1ip")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kssdw"]
+emission_shape = 2
+emission_sphere_radius = 0.3
+gravity = Vector3(0, 3, 0)
+color_ramp = SubResource("GradientTexture1D_7fgwr")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1jpel"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("3_j407i")
+billboard_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_if1pn"]
+material = SubResource("StandardMaterial3D_1jpel")
+size = Vector2(0.2, 0.3)
+orientation = 2
+
+[node name="Battery" type="Area3D" unique_id=470088223]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_ioqdl")
+
+[node name="battery" parent="." unique_id=574446694 instance=ExtResource("2_gmq5s")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.58185256, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1662702338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58185256, 0)
+shape = SubResource("SphereShape3D_jo1xs")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1113070131]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58185256, 0)
+emitting = false
+amount = 16
+lifetime = 1.2
+one_shot = true
+explosiveness = 0.87
+process_material = SubResource("ParticleProcessMaterial_kssdw")
+draw_pass_1 = SubResource("PlaneMesh_if1pn")

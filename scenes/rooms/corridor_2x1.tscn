@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://bvy6smqlncnii"]
 
 [ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_cedhs"]
-[ext_resource type="PackedScene" uid="uid://chrgeyauisyvw" path="res://scenes/floor_2x1.tscn" id="2_1ba7r"]
+[ext_resource type="PackedScene" uid="uid://chrgeyauisyvw" path="res://scenes/room_parts/floor_2x1.tscn" id="2_1ba7r"]
 [ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_lmnvl"]
-[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="3_aa77u"]
+[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/game_objects/ceiling_light.tscn" id="3_aa77u"]
 [ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="5_8iajm"]
+[ext_resource type="PackedScene" uid="uid://dwi3phhd7r56s" path="res://scenes/game_objects/battery_placeholder.tscn" id="6_lrohv"]
 
 [sub_resource type="Resource" id="Resource_8iajm"]
 script = ExtResource("2_lmnvl")
@@ -41,3 +42,6 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 22, 
 
 [node name="wall4" parent="." unique_id=1841514763 instance=ExtResource("5_8iajm")]
 transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 22, 0, 0)
+
+[node name="BatteryPlaceholder" parent="." unique_id=347901332 instance=ExtResource("6_lrohv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 7)

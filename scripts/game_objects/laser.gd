@@ -17,10 +17,10 @@ func _physics_process(_delta: float) -> void:
 	
 	if ray_cast.is_colliding():
 		laser_length = global_position.distance_to(ray_cast.get_collision_point()) + 0.1
-		if is_multiplayer_authority():
+		if multiplayer.is_server():
 			var player := ray_cast.get_collider() as Player
 			if player:
-				player.die.rpc()
+				player.die()
 	
 	var cylinder := mesh_inst.mesh as CylinderMesh
 	if cylinder:

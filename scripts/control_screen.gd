@@ -122,6 +122,10 @@ func setup() -> void:
 		_mini_map.add_child(button)
 
 
+func set_current_power(power: int) -> void:
+	%LabelPower.text = str(power)
+
+
 func _on_current_cctv_camera_changed(new_camera: CCTVCamera) -> void:
 	if new_camera.camera:
 		%NoCameraFeed.hide()

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bk6lv0p5uw6ir"]
 
 [ext_resource type="PackedScene" uid="uid://bkx7utxdssvgg" path="res://models/laser_emitter.glb" id="1_a7dhc"]
-[ext_resource type="Script" uid="uid://2n5w84ivb4dw" path="res://scripts/laser.gd" id="1_jjj73"]
+[ext_resource type="Script" uid="uid://2n5w84ivb4dw" path="res://scripts/game_objects/laser.gd" id="1_jjj73"]
 [ext_resource type="Shader" uid="uid://phppaf045wi1" path="res://shaders/additive_linear_volume.gdshader" id="2_jjj73"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jjj73"]

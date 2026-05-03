@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_m8gev"]
 [ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_wipai"]
 [ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="3_ft1ps"]
-[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/ceiling_light.tscn" id="4_avy4g"]
-[ext_resource type="PackedScene" uid="uid://bk6lv0p5uw6ir" path="res://scenes/laser.tscn" id="5_6g25k"]
+[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/game_objects/ceiling_light.tscn" id="4_avy4g"]
+[ext_resource type="PackedScene" uid="uid://bk6lv0p5uw6ir" path="res://scenes/game_objects/laser.tscn" id="5_6g25k"]
 [ext_resource type="Script" uid="uid://bk23d6a7qwmuj" path="res://scripts/rooms/laser_room.gd" id="6_ft1ps"]
+[ext_resource type="PackedScene" uid="uid://dwi3phhd7r56s" path="res://scenes/game_objects/battery_placeholder.tscn" id="7_of0im"]
 
 [sub_resource type="Resource" id="Resource_fttbu"]
 script = ExtResource("2_wipai")
@@ -80,3 +81,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.325, 31.8)
 script = ExtResource("6_ft1ps")
 room = NodePath("..")
 lasers = [NodePath("../Laser"), NodePath("../Laser2")]
+
+[node name="BatteryPlaceholder" parent="." unique_id=347901332 instance=ExtResource("7_of0im")]
+
+[node name="BatteryPlaceholder2" parent="." unique_id=1454351219 instance=ExtResource("7_of0im")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
+
+[node name="BatteryPlaceholder3" parent="." unique_id=1867335277 instance=ExtResource("7_of0im")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 22)
+
+[node name="BatteryPlaceholder4" parent="." unique_id=1900300690 instance=ExtResource("7_of0im")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22)

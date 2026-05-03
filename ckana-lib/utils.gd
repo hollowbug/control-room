@@ -28,6 +28,14 @@ static func rotate_vector2i(vector: Vector2i, clockwise_rotations: int) -> Vecto
 	return Vector2i(x, y)
 
 
+static func get_random_direction() -> Vector3:
+	return Vector3(
+		randf_range(-1, 1),
+		randf_range(-1, 1),
+		randf_range(-1, 1)
+	).normalized()
+
+
 static func save_config_file(file_path: String, data: Variant) -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("data", "data", data)

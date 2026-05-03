@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://b4v2edubn7buh"]
+
+[ext_resource type="Script" uid="uid://c27xetfc8jtx6" path="res://scripts/control_screen.gd" id="1_l8rke"]
+[ext_resource type="Script" uid="uid://mhiesrb42cqw" path="res://scripts/mini_map.gd" id="2_b2wnj"]
+[ext_resource type="Texture2D" uid="uid://cc6r5onrfb8ko" path="res://textures/power_icon.png" id="2_ycxxt"]
+
+[node name="ControlScreen" type="CanvasLayer" unique_id=1744125494]
+script = ExtResource("1_l8rke")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=941466926]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect" unique_id=1635438417]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer" unique_id=105801761]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer" unique_id=1481133957]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1121584020]
+layout_mode = 2
+texture = ExtResource("2_ycxxt")
+
+[node name="LabelPower" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer" unique_id=337647298]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "10"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer" unique_id=213270516]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="MiniMapContainer" type="ColorRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=449115746]
+unique_name_in_owner = true
+clip_children = 2
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.13319641, 0.13319641, 0.13319638, 1)
+
+[node name="MiniMapPivot" type="Control" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2/MiniMapContainer" unique_id=424269730]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MiniMap" type="Node2D" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2/MiniMapContainer/MiniMapPivot" unique_id=585121565]
+unique_name_in_owner = true
+z_index = 20
+script = ExtResource("2_b2wnj")
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1529094224]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer" unique_id=195249788]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/SubViewportContainer2" unique_id=1116517688]
+handle_input_locally = false
+size = Vector2i(936, 983)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/SubViewportContainer2/SubViewport" unique_id=1032653703]
+unique_name_in_owner = true
+
+[node name="NoCameraFeed" type="ColorRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer" unique_id=1117101250]
+unique_name_in_owner = true
+layout_mode = 2
+color = Color(0.13319641, 0.13319641, 0.13319638, 1)
+
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/NoCameraFeed" unique_id=868103131]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -22.5
+offset_right = 20.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "No Feed Available"

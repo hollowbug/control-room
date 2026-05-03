@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://orine7kjqpy5"]
 
 [ext_resource type="PackedScene" uid="uid://5bmqps8rn4t3" path="res://models/camera_mount.glb" id="1_domk0"]
-[ext_resource type="Script" uid="uid://cl8f0wovahmny" path="res://scripts/cctv_camera.gd" id="1_guh6t"]
+[ext_resource type="Script" uid="uid://cl8f0wovahmny" path="res://scripts/game_objects/cctv_camera.gd" id="1_guh6t"]
 [ext_resource type="PackedScene" uid="uid://0pfkv7g88w78" path="res://models/camera.glb" id="2_guh6t"]
 
 [node name="CCTVCamera" type="Node3D" unique_id=463506906 node_paths=PackedStringArray("camera") groups=["cctv_cameras"]]

@@ -2,6 +2,8 @@ extends Node3D
 
 const ControlScreen = preload("uid://c27xetfc8jtx6")
 
+var screen: ControlScreen
+
 @export var _interact_area: InteractArea
 #@export var _camera: Camera3D
 @export var _sub_viewport: SubViewport
@@ -11,7 +13,6 @@ const ControlScreen = preload("uid://c27xetfc8jtx6")
 #var _screen_plane: Plane
 var _turned_on := false
 var _player_using_screen := false
-var _screen: ControlScreen
 #var _material_white = preload("uid://vevkw7ptvn7n")
 var _material_white_outlined = preload("uid://blaiawgnvo4ud")
 
@@ -43,10 +44,10 @@ func turn_on() -> void:
 	#mat.emission_texture = mat.albedo_texture
 	mat.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
 	_screen_mesh.material_override = mat
-	if not _screen:
-		_screen = load("uid://b4v2edubn7buh").instantiate() as ControlScreen
-		if _screen:
-			_sub_viewport.add_child(_screen)
+	if not screen:
+		screen = load("uid://b4v2edubn7buh").instantiate() as ControlScreen
+		if screen:
+			_sub_viewport.add_child(screen)
 
 
 @rpc("call_local")

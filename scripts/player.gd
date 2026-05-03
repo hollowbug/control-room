@@ -17,6 +17,8 @@ var _t_bob: float
 const BASE_FOV := 70.0
 const FOV_CHANGE := 10.0
 
+static var living_players: Array[Player]
+
 # Interactions
 @export var interact_ray: RayCast3D
 var interact_area: InteractArea
@@ -36,8 +38,13 @@ var _jumping := false
 
 
 func _enter_tree() -> void:
+	living_players.append(self)
 	if name.is_valid_int():
 		set_multiplayer_authority(int(name))
+
+
+func _exit_tree() -> void:
+	living_players.erase(self)
 
 
 func _ready() -> void:
@@ -53,14 +60,14 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not player_control or UI.is_pause_menu_open(): return
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and not UI.is_pause_menu_open():
 		if is_dead:
 			camera.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-		else:
+		elif player_control:
 			rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-		camera.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
-		camera.rotation.x = clampf(camera.rotation.x, -deg_to_rad(CAMERA_MAX_PITCH_DEGREES), deg_to_rad(CAMERA_MAX_PITCH_DEGREES))
+		if is_dead or player_control:
+			camera.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
+			camera.global_rotation.x = clampf(camera.global_rotation.x, -deg_to_rad(CAMERA_MAX_PITCH_DEGREES), deg_to_rad(CAMERA_MAX_PITCH_DEGREES))
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -146,6 +153,12 @@ func drop_held_item() -> void:
 		interact_ray.enabled = true
 
 
+func die() -> void:
+	## Host handles killing players
+	if multiplayer.is_server():
+		_on_death.rpc()
+
+
 func _head_bob(time) -> Vector3:
 	return Vector3.UP * sin(time * BOB_FREQ) * BOB_AMP
 
@@ -186,7 +199,13 @@ func _on_jump_timer_timeout() -> void:
 	_jumping = false
 
 
-#region RPCs ///////////////////////////////////////////////////
+func _death_animation(target_basis: Basis) -> void:
+	var tween = create_tween().set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_IN).set_parallel()
+	tween.tween_property($CollisionShape3D, "global_basis", target_basis, 0.3)
+	tween.tween_property($MeshInstance3D, "global_basis", target_basis, 0.3)
+
+
+#region RPCs called by the host /////////////////////////////
 
 @rpc("any_peer", "call_local")
 func set_global_transform_rpc(pos: Vector3, rot: Vector3) -> void:
@@ -195,24 +214,17 @@ func set_global_transform_rpc(pos: Vector3, rot: Vector3) -> void:
 
 
 @rpc("any_peer", "call_local")
-func die() -> void:
+func _on_death() -> void:
 	if is_dead: return
 	is_dead = true
+	living_players.erase(self)
 	SignalBus.player_died.emit(self)
-	if is_multiplayer_authority():
-		create_tween().tween_property(camera, "position", Vector3(0, 3, 3), 3.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		var target_basis: Basis
-		if velocity.slide(Vector3.UP).length() > 0.5:
-			target_basis = Basis(velocity.slide(Vector3.UP).normalized().rotated(Vector3.UP, PI * 0.5), PI * 0.5)
-		else:
-			target_basis = Basis(Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU), PI * 0.5)
-		_death_animation.rpc(target_basis)
-
-
-@rpc("call_local")
-func _death_animation(target_basis: Basis) -> void:
-	var tween = create_tween().set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_IN).set_parallel()
-	tween.tween_property($CollisionShape3D, "global_basis", target_basis, 0.3)
-	tween.tween_property($MeshInstance3D, "global_basis", target_basis, 0.3)
+	create_tween().tween_property(camera, "position", Vector3(0, 3, 3), 3.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	var target_basis: Basis
+	if velocity.slide(Vector3.UP).length() > 0.5:
+		target_basis = Basis(velocity.slide(Vector3.UP).normalized().rotated(Vector3.UP, PI * 0.5), PI * 0.5)
+	else:
+		target_basis = Basis(Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU), PI * 0.5)
+	_death_animation(target_basis)
 
 #endregion

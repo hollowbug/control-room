@@ -29,11 +29,13 @@ var _scenes: Dictionary[String, PackedScene] = {
 	door = load("uid://bg3i1qg76jyw8"),
 	wall = load("uid://bcn52n0r6ewsn"),
 	wall_with_door = load("uid://583hxvak04ds"),
+	battery = load("uid://cmqe6rq82e3mv"),
 }
 var _room_scenes: Array[PackedScene] = [
 	load("uid://eu6u2228knpv"),
 	load("uid://bvy6smqlncnii"),
 	load("uid://lq3ikfse6o6i"),
+	load("uid://cmq1ti3i315ii"),
 ]
 var _grid: Dictionary[Vector2i, int]
 var _rooms: Array[Room]
@@ -190,6 +192,16 @@ func generate_map() -> void:
 				) * Globals.CELL_SIZE
 				door.basis = Basis.looking_at(Vector3(conn.direction.x, 0, conn.direction.y))
 				_spawn_node(door)
+	
+	# Spawn batteries
+	var batteries := get_tree().get_nodes_in_group("battery_placeholders")
+	batteries.shuffle()
+	for placeholder: Node3D in batteries.slice(0, mini(batteries.size(), 5)):
+		var battery := _scenes.battery.instantiate() as Node3D
+		if not battery: break
+		battery.global_transform = placeholder.global_transform
+		_spawn_node(battery)
+	
 	
 	if is_multiplayer_authority():
 		map_generation_finished.emit()
