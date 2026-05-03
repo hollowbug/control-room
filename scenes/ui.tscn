@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bh3h5i2g5mpco" path="res://scripts/ui.gd" id="1_nt7q6"]
 
 [node name="UI" type="CanvasLayer" unique_id=2046044648]
+process_mode = 3
 layer = 10
 script = ExtResource("1_nt7q6")
 
@@ -122,7 +123,6 @@ text = "10"
 
 [node name="PauseMenu" type="ColorRect" parent="." unique_id=685634354]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -131,6 +131,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu" unique_id=1830044691]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -149,3 +150,15 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "Paused"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="PauseMenu/VBoxContainer" unique_id=19686063]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="Button2" type="Button" parent="PauseMenu/VBoxContainer" unique_id=411460151]
+layout_mode = 2
+text = "Exit to Desktop"
+
+[connection signal="pressed" from="PauseMenu/VBoxContainer/Button" to="." method="_on_button_main_menu_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/Button2" to="." method="_on_button_quit_pressed"]

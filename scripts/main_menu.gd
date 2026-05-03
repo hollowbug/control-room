@@ -39,6 +39,12 @@ func _on_button_host_steam_pressed() -> void:
 	_start_game()
 
 
+func _on_button_join_steam_pressed() -> void:
+	MultiplayerManager.mode = MultiplayerManager.Mode.STEAM_CLIENT
+	MultiplayerManager.lobby_code = %LineEdit.text
+	_start_game()
+
+
 func _on_button_quit_pressed() -> void:
 	get_tree().quit()
 	

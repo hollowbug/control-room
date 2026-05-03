@@ -3,6 +3,8 @@ extends CanvasLayer
 @onready var _interact_label: RichTextLabel = $InteractLabel
 @onready var _crosshair: Control = $Crosshair
 
+signal main_menu_pressed()
+
 
 func _ready() -> void:
 	hide()
@@ -31,12 +33,12 @@ func hide_interact_prompt() -> void:
 		_interact_label.hide()
 
 
-func set_current_power(value: int) -> void:
+func set_current_power(_value: int) -> void:
 	#%LabelCurrentPower.text = str(value)
 	pass
 
 
-func set_max_power(value: int) -> void:
+func set_max_power(_value: int) -> void:
 	#%LabelMaxPower.text = str(value)
 	pass
 
@@ -50,14 +52,25 @@ func set_spectated_player(id: int) -> void:
 
 
 func open_pause_menu() -> void:
+	if not multiplayer.has_multiplayer_peer():
+		get_tree().paused = true
 	%LabelPaused.text = "Paused" if MultiplayerManager.mode == MultiplayerManager.Mode.SINGLE_PLAYER\
 			else "Not Paused!"
 	%PauseMenu.show()
 
 
 func close_pause_menu() -> void:
+	get_tree().paused = false
 	%PauseMenu.hide()
 
 
 func is_pause_menu_open() -> bool:
 	return %PauseMenu.visible
+
+
+func _on_button_main_menu_pressed() -> void:
+	main_menu_pressed.emit()
+
+
+func _on_button_quit_pressed() -> void:
+	get_tree().quit()

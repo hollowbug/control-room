@@ -29,6 +29,7 @@ var _currently_spectated_player: Player
 
 func _ready() -> void:
 	UI.show()
+	UI.main_menu_pressed.connect(_on_button_main_menu_pressed)
 	_room_generator.map_generation_finished.connect(_on_map_generation_finished)
 	SignalBus.player_died.connect(_on_player_died)
 	match MultiplayerManager.mode:
@@ -48,6 +49,8 @@ func _ready() -> void:
 			# TODO error handling
 			MultiplayerManager.host_steam_lobby()
 			_host_setup()
+		MultiplayerManager.Mode.STEAM_CLIENT:
+			MultiplayerManager.join_steam_lobby(MultiplayerManager.lobby_code)
 	#%LoadingScreen.hide()
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -208,6 +211,12 @@ func _on_player_died(player: Player) -> void:
 	# Start spectating when you die
 	if player == Globals.local_player:
 		_currently_spectated_player = player
+
+
+func _on_button_main_menu_pressed() -> void:
+	multiplayer.multiplayer_peer.close()
+	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 
 func _cycle_spectated_player(backwards := false) -> void:
