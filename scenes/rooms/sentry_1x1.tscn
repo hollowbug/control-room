@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://c5onjgipo1fqg"]
+
+[ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_t3xs7"]
+[ext_resource type="PackedScene" uid="uid://b1xa43sara815" path="res://scenes/room_parts/floor_1x1.tscn" id="2_58p6i"]
+[ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_fmxug"]
+[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/game_objects/ceiling_light.tscn" id="3_kn20v"]
+[ext_resource type="PackedScene" uid="uid://deqxkajxvbxm1" path="res://models/sentry_room_antenna.glb" id="4_lsl5p"]
+[ext_resource type="Script" uid="uid://dwcgvkewmj60t" path="res://scripts/rooms/sentry_1x1.gd" id="5_fmxug"]
+[ext_resource type="PackedScene" uid="uid://ctkdiss7knijx" path="res://scenes/game_objects/sentry.tscn" id="6_lsl5p"]
+[ext_resource type="Script" uid="uid://d0qmuvtr1cso8" path="res://scripts/components/powerable_component.gd" id="7_fmxug"]
+
+[sub_resource type="Resource" id="Resource_eprxv"]
+script = ExtResource("2_fmxug")
+direction = Vector2i(-1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_8lqj7"]
+script = ExtResource("2_fmxug")
+direction = Vector2i(1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_tvni0"]
+script = ExtResource("2_fmxug")
+direction = Vector2i(0, -1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_xme1e"]
+script = ExtResource("2_fmxug")
+direction = Vector2i(0, 1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_eprxv"]
+height = 4.6
+
+[node name="Sentry1x1" type="Node3D" unique_id=560397422]
+script = ExtResource("1_t3xs7")
+allowed_connections = Array[ExtResource("2_fmxug")]([SubResource("Resource_eprxv"), SubResource("Resource_8lqj7"), SubResource("Resource_tvni0"), SubResource("Resource_xme1e")])
+metadata/_custom_type_script = "uid://bk3jcsthcrnvf"
+
+[node name="Floor1x1" parent="." unique_id=1879765563 instance=ExtResource("2_58p6i")]
+
+[node name="CeilingLight" parent="." unique_id=1171493253 instance=ExtResource("3_kn20v")]
+
+[node name="sentry_room_antenna" parent="." unique_id=298830053 instance=ExtResource("4_lsl5p")]
+script = ExtResource("5_fmxug")
+
+[node name="Sentry" parent="sentry_room_antenna" unique_id=1366679240 node_paths=PackedStringArray("_powerable") instance=ExtResource("6_lsl5p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.516034)
+_powerable = NodePath("PowerableComponent")
+
+[node name="PowerableComponent" type="Node" parent="sentry_room_antenna/Sentry" unique_id=1790326501 node_paths=PackedStringArray("room")]
+script = ExtResource("7_fmxug")
+room = NodePath("../../..")
+metadata/_custom_type_script = "uid://d0qmuvtr1cso8"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="sentry_room_antenna" unique_id=317677582]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="sentry_room_antenna/StaticBody3D" unique_id=1886709089]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+shape = SubResource("CylinderShape3D_eprxv")

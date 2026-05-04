@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_t8ybc"]
 [ext_resource type="PackedScene" uid="uid://b1xa43sara815" path="res://scenes/room_parts/floor_1x1.tscn" id="3_a5qdc"]
 [ext_resource type="PackedScene" uid="uid://cojvkvj6qml3s" path="res://scenes/game_objects/turret.tscn" id="5_agtrb"]
+[ext_resource type="Script" uid="uid://d0qmuvtr1cso8" path="res://scripts/components/powerable_component.gd" id="6_lgd8i"]
 [ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/game_objects/ceiling_light.tscn" id="8_r5dq5"]
 
 [sub_resource type="Resource" id="Resource_lgd8i"]
@@ -26,7 +27,7 @@ script = ExtResource("2_t8ybc")
 direction = Vector2i(0, 1)
 metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
 
-[node name="Turret1x1" type="Node3D" unique_id=1139310745 groups=["starting_room"]]
+[node name="Turret1x1" type="Node3D" unique_id=1139310745]
 script = ExtResource("1_pp36e")
 allowed_connections = Array[ExtResource("2_t8ybc")]([SubResource("Resource_lgd8i"), SubResource("Resource_awd5k"), SubResource("Resource_7e8gg"), SubResource("Resource_gc8kv")])
 
@@ -34,5 +35,10 @@ allowed_connections = Array[ExtResource("2_t8ybc")]([SubResource("Resource_lgd8i
 
 [node name="CeilingLight" parent="." unique_id=1171493253 instance=ExtResource("8_r5dq5")]
 
-[node name="Turret" parent="." unique_id=1166897147 node_paths=PackedStringArray("_room") instance=ExtResource("5_agtrb")]
-_room = NodePath("..")
+[node name="Turret" parent="." unique_id=1166897147 node_paths=PackedStringArray("_powerable") instance=ExtResource("5_agtrb")]
+_powerable = NodePath("PowerableComponent")
+
+[node name="PowerableComponent" type="Node" parent="Turret" unique_id=1479757150 node_paths=PackedStringArray("room")]
+script = ExtResource("6_lgd8i")
+room = NodePath("../..")
+metadata/_custom_type_script = "uid://d0qmuvtr1cso8"

@@ -19,7 +19,8 @@
 			"uuid": "0b0af853-6576-4b9b-b56a-b647ce5ec61a",
 			"title": "Doing",
 			"tasks": [
-				"29f77ad1-11a0-4e16-8ad1-4a70ce0caa49"
+				"29f77ad1-11a0-4e16-8ad1-4a70ce0caa49",
+				"95b78a40-e4c1-4d76-81f0-288656bfffc5"
 			]
 		},
 		{
@@ -102,6 +103,13 @@
 		{
 			"uuid": "e7bbf4c3-0254-47bd-b70f-f0a248d8470e",
 			"title": "Turret room",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "95b78a40-e4c1-4d76-81f0-288656bfffc5",
+			"title": "Sentry room (some kind of transmitter)",
 			"description": "",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []

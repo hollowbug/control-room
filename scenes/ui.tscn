@@ -123,6 +123,7 @@ text = "10"
 
 [node name="PauseMenu" type="ColorRect" parent="." unique_id=685634354]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -159,6 +160,30 @@ text = "Main Menu"
 [node name="Button2" type="Button" parent="PauseMenu/VBoxContainer" unique_id=411460151]
 layout_mode = 2
 text = "Exit to Desktop"
+
+[node name="LoadingScreen" type="ColorRect" parent="." unique_id=445017070]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="LoadingScreen" unique_id=1954540565]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.5
+offset_top = -22.5
+offset_right = 100.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Connecting..."
 
 [connection signal="pressed" from="PauseMenu/VBoxContainer/Button" to="." method="_on_button_main_menu_pressed"]
 [connection signal="pressed" from="PauseMenu/VBoxContainer/Button2" to="." method="_on_button_quit_pressed"]

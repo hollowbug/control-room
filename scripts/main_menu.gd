@@ -8,7 +8,7 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	match MultiplayerManager.error:
 		OK: %Popup.hide()
-		_: _show_popup(error_string(MultiplayerManager.error))
+		_: _show_popup("Error: " + error_string(MultiplayerManager.error))
 
 
 func _start_game() -> void:

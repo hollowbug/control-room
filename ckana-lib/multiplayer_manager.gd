@@ -3,6 +3,9 @@ extends Node
 enum Mode {SINGLE_PLAYER, LOCAL_HOST, LOCAL_CLIENT, STEAM_HOST, STEAM_CLIENT}
 enum State {DEFAULT, CREATING_STEAM_LOBBY, JOINING_STEAM_LOBBY}
 
+signal connection_result(result: Error)
+signal connection_lost()
+
 const PORT = 8000
 
 var mode := Mode.SINGLE_PLAYER
@@ -15,6 +18,7 @@ var state := State.DEFAULT
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	var initialized := Steam.steamInit(480, true)
 	print("Steam initialized: ", initialized)
 	if initialized:
@@ -48,6 +52,7 @@ func join_local_lobby() -> Error:
 
 
 func host_steam_lobby() -> void:
+	state = State.CREATING_STEAM_LOBBY
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 16)
 	is_host = true
 
@@ -55,7 +60,7 @@ func host_steam_lobby() -> void:
 func join_steam_lobby(join_code: String) -> void:
 	state = State.JOINING_STEAM_LOBBY
 	lobby_code = join_code
-	Steam.requestLobbyList()
+	_initiate_steam_lobby_connection()
 
 
 func _on_steam_lobby_created(result: int, id: int) -> void:
@@ -65,7 +70,14 @@ func _on_steam_lobby_created(result: int, id: int) -> void:
 		peer = SteamMultiplayerPeer.new()
 		peer.server_relay = true
 		error = peer.create_host()
-		multiplayer.multiplayer_peer = peer
+		if error == OK:
+			multiplayer.multiplayer_peer = peer
+			state = State.DEFAULT
+			_initiate_steam_lobby_connection()
+			print("Created Steam lobby: ", lobby_id)
+		connection_result.emit(error)
+	else:
+		connection_result.emit(result)
 
 
 func _on_steam_lobby_match_list(lobbies: Array) -> void:
@@ -87,10 +99,23 @@ func _on_steam_lobby_match_list(lobbies: Array) -> void:
 
 
 func _on_steam_lobby_joined(id: int, _permissions: int, _locked: bool, response: int) -> void:
-	if state == State.JOINING_STEAM_LOBBY and response == Steam.RESULT_OK:
+	if state != State.JOINING_STEAM_LOBBY: return
+	if response == Steam.RESULT_OK:
 		state = State.DEFAULT
 		lobby_id = id
+		print("Joined Steam lobby: ", lobby_id)
 		peer = SteamMultiplayerPeer.new()
 		peer.create_client(Steam.getLobbyOwner(id))
 		error = peer.connect_to_lobby(id)
+		connection_result.emit(error)
 		multiplayer.multiplayer_peer = peer
+	else:
+		connection_result.emit(response)
+
+
+func _initiate_steam_lobby_connection() -> void:
+	Steam.requestLobbyList()
+	await get_tree().create_timer(2.5).timeout
+	print("State after await: ", State.find_key(state))
+	if state != State.DEFAULT:
+		connection_result.emit(ERR_TIMEOUT)

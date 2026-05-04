@@ -7,11 +7,11 @@ signal powered_off()
 
 @export var room_size := Vector2i.ONE
 @export var allowed_connections: Array[RoomConnection]
+@export var is_powered := true
 var grid_position: Vector2i
 var room_rotation: int
 var connections: Dictionary[RoomConnection, Room]
 var doors: Dictionary[RoomConnection, Door]
-var is_powered := true
 
 
 func _enter_tree() -> void:

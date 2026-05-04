@@ -10,6 +10,7 @@ func _ready() -> void:
 	hide()
 	hide_interact_prompt()
 	close_pause_menu()
+	hide_loading_screen()
 	set_spectated_player(-1)
 
 
@@ -66,6 +67,18 @@ func close_pause_menu() -> void:
 
 func is_pause_menu_open() -> bool:
 	return %PauseMenu.visible
+
+
+func show_loading_screen() -> void:
+	%LoadingScreen.show()
+
+
+func hide_loading_screen() -> void:
+	%LoadingScreen.hide()
+
+
+func is_loading_screen_visible() -> bool:
+	return %LoadingScreen.visible
 
 
 func _on_button_main_menu_pressed() -> void:

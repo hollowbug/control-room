@@ -14,7 +14,7 @@ signal map_generation_finished(map_id: int)
 	#"uid://eu6u2228knpv",
 #]
 
-@export var room_count := 5
+@export var room_count := 10
 @export var spawner: NodeSpawner
 @export_tool_button("Generate") var generate_action := generate_map
 var map_index := -1
@@ -36,6 +36,7 @@ var _room_scenes: Array[PackedScene] = [
 	load("uid://bvy6smqlncnii"),
 	load("uid://lq3ikfse6o6i"),
 	load("uid://cmq1ti3i315ii"),
+	load("uid://c5onjgipo1fqg"),
 ]
 var _grid: Dictionary[Vector2i, int]
 var _rooms: Array[Room]
@@ -51,6 +52,7 @@ func _ready() -> void:
 
 
 func generate_map() -> void:
+	print(_room_scenes)
 	map_index += 1
 	
 	#print("\n==== STARTING GENERATION ====\n")

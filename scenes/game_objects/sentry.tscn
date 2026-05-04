@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://ctkdiss7knijx"]
+
+[ext_resource type="PackedScene" uid="uid://b577r4isnc4l3" path="res://models/sentry_base.glb" id="1_mivxh"]
+[ext_resource type="Script" uid="uid://neqhmj0exrdu" path="res://scripts/game_objects/sentry.gd" id="1_vpljv"]
+[ext_resource type="PackedScene" uid="uid://blsuqikepwwtq" path="res://models/turret.glb" id="2_2bgsj"]
+[ext_resource type="Script" uid="uid://k0yyoomj42jk" path="res://scripts/game_objects/turret_component.gd" id="4_dn507"]
+[ext_resource type="Script" uid="uid://bm7pi0apx6vqj" path="res://scripts/components/vision_component.gd" id="4_ej2rs"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dn507"]
+radius = 1.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vpljv"]
+properties/0/path = NodePath("turret:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Sentry" type="CharacterBody3D" unique_id=1366679240]
+script = ExtResource("1_vpljv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=823513083]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("SphereShape3D_dn507")
+
+[node name="sentry_base" parent="." unique_id=1369776802 instance=ExtResource("1_mivxh")]
+
+[node name="turret" parent="." unique_id=1529612082 node_paths=PackedStringArray("_bullet_spawn_marker") instance=ExtResource("2_2bgsj")]
+script = ExtResource("4_dn507")
+_bullet_spawn_marker = NodePath("Marker3D")
+
+[node name="Marker3D" type="Marker3D" parent="turret" unique_id=1598478258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2975272, -1.7232469)
+
+[node name="VisionComponent" type="RayCast3D" parent="." unique_id=1894454950 node_paths=PackedStringArray("node_to_rotate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3153794, 0)
+target_position = Vector3(0, 0, -30)
+collision_mask = 3
+script = ExtResource("4_ej2rs")
+vision_range = 40.0
+fov = 1.0471975511965976
+node_to_rotate = NodePath("../turret")
+rotation_speed = 2.0
+metadata/_custom_type_script = "uid://bm7pi0apx6vqj"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1753432419]
+replication_config = SubResource("SceneReplicationConfig_vpljv")

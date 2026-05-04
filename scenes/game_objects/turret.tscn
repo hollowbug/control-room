@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://7eswr4v60krx" path="res://scripts/game_objects/turret.gd" id="1_5k3bv"]
 [ext_resource type="PackedScene" uid="uid://bosawm0hbhc4f" path="res://models/turret_base.glb" id="1_a5bpn"]
 [ext_resource type="PackedScene" uid="uid://blsuqikepwwtq" path="res://models/turret.glb" id="2_5k3bv"]
+[ext_resource type="Script" uid="uid://bm7pi0apx6vqj" path="res://scripts/components/vision_component.gd" id="4_drqaj"]
+[ext_resource type="Script" uid="uid://k0yyoomj42jk" path="res://scripts/game_objects/turret_component.gd" id="4_wdhcb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_drqaj"]
 size = Vector3(2, 2, 2)
@@ -17,7 +19,9 @@ script = ExtResource("1_5k3bv")
 
 [node name="turret_base" parent="." unique_id=197297809 instance=ExtResource("1_a5bpn")]
 
-[node name="turret" parent="." unique_id=2067821112 instance=ExtResource("2_5k3bv")]
+[node name="turret" parent="." unique_id=1529612082 node_paths=PackedStringArray("_bullet_spawn_marker") instance=ExtResource("2_5k3bv")]
+script = ExtResource("4_wdhcb")
+_bullet_spawn_marker = NodePath("Marker3D")
 
 [node name="Marker3D" type="Marker3D" parent="turret" unique_id=532567058]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.288, -1.662)
@@ -26,10 +30,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.288, -1.662)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_drqaj")
 
-[node name="RayCast3D" type="RayCast3D" parent="." unique_id=1179218415]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2890749, 0)
+[node name="VisionComponent" type="RayCast3D" parent="." unique_id=1179218415 node_paths=PackedStringArray("node_to_rotate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3349321, 0)
 target_position = Vector3(0, 0, -30)
 collision_mask = 3
+script = ExtResource("4_drqaj")
+fov = 1.0471975511965976
+node_to_rotate = NodePath("../turret")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=165113522]
 replication_config = SubResource("SceneReplicationConfig_drqaj")

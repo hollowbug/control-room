@@ -29,6 +29,7 @@ var _currently_spectated_player: Player
 
 func _ready() -> void:
 	UI.show()
+	UI.show_loading_screen()
 	UI.main_menu_pressed.connect(_on_button_main_menu_pressed)
 	_room_generator.map_generation_finished.connect(_on_map_generation_finished)
 	SignalBus.player_died.connect(_on_player_died)
@@ -48,10 +49,16 @@ func _ready() -> void:
 		MultiplayerManager.Mode.STEAM_HOST:
 			# TODO error handling
 			MultiplayerManager.host_steam_lobby()
+			var result: Error = await MultiplayerManager.connection_result
+			print("Result: ", error_string(result))
+			if result != OK: _return_to_menu()
 			_host_setup()
 		MultiplayerManager.Mode.STEAM_CLIENT:
 			MultiplayerManager.join_steam_lobby(MultiplayerManager.lobby_code)
-	#%LoadingScreen.hide()
+			var result: Error = await MultiplayerManager.connection_result
+			print("Result: ", error_string(result))
+			if result != OK: _return_to_menu()
+	UI.hide_loading_screen()
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
@@ -78,8 +85,9 @@ func _client_setup() -> void:
 
 
 func _return_to_menu() -> void:
+	UI.close_pause_menu()
 	multiplayer.multiplayer_peer.close()
-	get_tree().change_scene_to_file.call_deferred("uid://0olohqhibl5v")
+	get_tree().change_scene_to_file.call_deferred("uid://dc0m5115i48nn")
 
 
 #region HOST-ONLY FUNCTIONS //////////////////////////////
