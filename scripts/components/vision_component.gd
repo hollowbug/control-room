@@ -36,29 +36,23 @@ func rotate_toward_nearest_player_by_angle(delta: float) -> Player:
 	if not is_instance_valid(node_to_rotate):
 		return null
 	
-	var targets: Array[Player]
 	var target: Player
+	var smallest_angle := PI
 	for player in Player.living_players:
 		if global_position.distance_squared_to(player.global_position) > _range_sq:
+			continue
+		var to_target := (player.global_position - global_position)
+		var angle_to_target := Vector2(-to_target.z, -to_target.x).angle()
+		var angle := angle_difference(node_to_rotate.global_rotation.y, angle_to_target)
+		if angle > fov * 0.5 or abs(angle) > abs(smallest_angle):
 			continue
 		look_at(player.global_position.slide(Vector3.UP) + Vector3.UP * global_position.y)
 		force_raycast_update()
 		if get_collider() is Player:
-			targets.append(get_collider())
-	
-	if not targets: return null
-	
-	var smallest_angle := PI
-	for t in targets:
-		var to_target := (t.global_position - global_position)
-		var angle_to_target := Vector2(-to_target.z, -to_target.x).angle()
-		var angle := angle_difference(node_to_rotate.global_rotation.y, angle_to_target)
-		if abs(angle) < abs(smallest_angle):
-			prints(rad_to_deg(angle), rad_to_deg(fov))
 			smallest_angle = angle
-			target = t
+			target = get_collider()
 	
-	if abs(smallest_angle) > fov * 0.5: return null
+	if not target: return null
 	
 	var rotation_delta := minf(rotation_speed * delta, abs(smallest_angle)) * signf(smallest_angle)
 	node_to_rotate.rotate_y(rotation_delta)

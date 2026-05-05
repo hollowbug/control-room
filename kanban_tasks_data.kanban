@@ -12,7 +12,8 @@
 			"title": "Todo",
 			"tasks": [
 				"c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8",
-				"35194b68-22c9-4d85-9502-1b62633075fe"
+				"35194b68-22c9-4d85-9502-1b62633075fe",
+				"39fe43cd-1cb9-4449-b81f-cc3ef6416bbf"
 			]
 		},
 		{
@@ -110,6 +111,13 @@
 		{
 			"uuid": "95b78a40-e4c1-4d76-81f0-288656bfffc5",
 			"title": "Sentry room (some kind of transmitter)",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "39fe43cd-1cb9-4449-b81f-cc3ef6416bbf",
+			"title": "Don't let dead people control the screen",
 			"description": "",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []

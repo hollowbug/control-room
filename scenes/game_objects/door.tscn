@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ck2waihufia01" path="res://scripts/game_objects/door.gd" id="1_hpvv5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uvdjg"]
-size = Vector3(3, 5, 0.3)
+size = Vector3(3, 5, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_83dcw"]
 albedo_color = Color(0.556953, 0.556953, 0.556953, 1)
@@ -12,7 +12,7 @@ roughness = 0.33
 
 [sub_resource type="BoxMesh" id="BoxMesh_la1wf"]
 material = SubResource("StandardMaterial3D_83dcw")
-size = Vector3(3, 5, 0.3)
+size = Vector3(3, 5, 1)
 
 [node name="Door" type="Node3D" unique_id=1579850732 groups=["doors"]]
 script = ExtResource("1_hpvv5")

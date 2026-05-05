@@ -45,7 +45,7 @@ metadata/_custom_type_script = "uid://bk3jcsthcrnvf"
 script = ExtResource("5_fmxug")
 
 [node name="Sentry" parent="sentry_room_antenna" unique_id=1366679240 node_paths=PackedStringArray("_powerable") instance=ExtResource("6_lsl5p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.516034)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5920353)
 _powerable = NodePath("PowerableComponent")
 
 [node name="PowerableComponent" type="Node" parent="sentry_room_antenna/Sentry" unique_id=1790326501 node_paths=PackedStringArray("room")]

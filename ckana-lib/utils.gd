@@ -18,6 +18,16 @@ static func is_event_mouse_wheel_down(event: InputEvent) -> bool:
 	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN
 
 
+## Returns [code]true[/code] if the target rotation was reached.
+static func rotate_toward_target(node: Node3D, target: Vector3, delta: float) -> bool:
+	var to_target := target - node.global_position
+	var angle := (-node.global_basis.z).angle_to(to_target)
+	node.global_transform = node.global_transform.interpolate_with(
+		node.global_transform.looking_at(target), minf(1.0, delta / angle)
+	)
+	return angle <= delta
+
+
 static func rotate_vector2i(vector: Vector2i, clockwise_rotations: int) -> Vector2i:
 	var x := vector.x
 	var y := vector.y
