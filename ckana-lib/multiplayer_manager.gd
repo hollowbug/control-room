@@ -14,15 +14,16 @@ var error: Error
 var lobby_id := 0
 var lobby_code: String
 var peer: MultiplayerPeer = OfflineMultiplayerPeer.new()
+var is_steam_initialized := false
 var is_host := false
 var state := State.DEFAULT
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	var initialized := Steam.steamInit(480, true)
-	print("Steam initialized: ", initialized)
-	if initialized:
+	is_steam_initialized = Steam.steamInit(480, true)
+	print("Steam initialized: ", is_steam_initialized)
+	if is_steam_initialized:
 		Steam.initRelayNetworkAccess()
 		Steam.lobby_created.connect(_on_steam_lobby_created)
 		Steam.lobby_match_list.connect(_on_steam_lobby_match_list)

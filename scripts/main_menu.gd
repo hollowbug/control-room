@@ -6,6 +6,8 @@ const MAIN_SCENE_UID = "uid://v3lx8vapp48e"
 func _ready() -> void:
 	UI.hide()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if MultiplayerManager.is_steam_initialized:
+		%NotConnectedToSteam.hide()
 	match MultiplayerManager.error:
 		OK: %Popup.hide()
 		_: _show_popup("Error: " + error_string(MultiplayerManager.error))

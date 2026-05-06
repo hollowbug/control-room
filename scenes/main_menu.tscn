@@ -40,25 +40,50 @@ text = "Host Local"
 layout_mode = 2
 text = "Join Local"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=2130099954]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer" unique_id=1302184529]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=94082663]
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/MarginContainer" unique_id=2130099954]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer2" unique_id=94082663]
 layout_mode = 2
 text = "Host Steam Lobby"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2" unique_id=1037148006]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer/VBoxContainer2" unique_id=1037148006]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=773129010]
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=773129010]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Lobby Code"
 
-[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1776131294]
+[node name="Button2" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1776131294]
 layout_mode = 2
 text = "Join"
+
+[node name="NotConnectedToSteam" type="ColorRect" parent="HBoxContainer/MarginContainer" unique_id=1092559866]
+unique_name_in_owner = true
+layout_mode = 2
+color = Color(0, 0, 0, 0.8392157)
+
+[node name="Label" type="Label" parent="HBoxContainer/MarginContainer/NotConnectedToSteam" unique_id=60984501]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.5
+offset_top = -46.5
+offset_right = 113.5
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Not connected
+to Steam"
+horizontal_alignment = 1
 
 [node name="Popup" type="ColorRect" parent="." unique_id=877085468]
 unique_name_in_owner = true
@@ -103,6 +128,6 @@ text = "OK"
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Button3" to="." method="_on_button_single_player_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Button" to="." method="_on_button_host_local_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Button2" to="." method="_on_button_join_local_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer2/Button" to="." method="_on_button_host_steam_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer2/HBoxContainer/Button2" to="." method="_on_button_join_steam_pressed"]
+[connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer2/Button" to="." method="_on_button_host_steam_pressed"]
+[connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/Button2" to="." method="_on_button_join_steam_pressed"]
 [connection signal="pressed" from="Popup/PanelContainer/VBoxContainer/Button" to="." method="_on_button_close_popup_pressed"]
