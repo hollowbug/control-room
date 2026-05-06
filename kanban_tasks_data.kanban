@@ -12,22 +12,24 @@
 			"title": "Todo",
 			"tasks": [
 				"c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8",
-				"35194b68-22c9-4d85-9502-1b62633075fe",
-				"39fe43cd-1cb9-4449-b81f-cc3ef6416bbf"
+				"35194b68-22c9-4d85-9502-1b62633075fe"
 			]
 		},
 		{
 			"uuid": "0b0af853-6576-4b9b-b56a-b647ce5ec61a",
 			"title": "Doing",
 			"tasks": [
-				"29f77ad1-11a0-4e16-8ad1-4a70ce0caa49",
-				"95b78a40-e4c1-4d76-81f0-288656bfffc5"
+				"29f77ad1-11a0-4e16-8ad1-4a70ce0caa49"
 			]
 		},
 		{
 			"uuid": "3c62e7b1-d9bd-4c47-9bff-691f998cb538",
 			"title": "Done",
 			"tasks": [
+				"90c7a675-5630-4c51-83c8-ff9b41026cdc",
+				"e411dbb2-cc3e-4992-b572-d5f44f45d2b5",
+				"39fe43cd-1cb9-4449-b81f-cc3ef6416bbf",
+				"95b78a40-e4c1-4d76-81f0-288656bfffc5",
 				"e7bbf4c3-0254-47bd-b70f-f0a248d8470e",
 				"fb854a29-47f1-4387-b024-7007ef702937",
 				"0b749195-ea97-4f2d-b80a-d064692cdfd2",
@@ -97,7 +99,7 @@
 		{
 			"uuid": "35194b68-22c9-4d85-9502-1b62633075fe",
 			"title": "Allow rooms to require connections (avoid useless dead ends)",
-			"description": "Maybe the room generator has a list of rooms that are allowed as dead ends\nand a list of rooms that arent.",
+			"description": "Maybe the room generator has a list of rooms that are allowed as dead ends\nand a list of rooms that arent.\n\nOr maybe rooms have a priority number so certain rooms are less likely to be dead ends?",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []
 		},
@@ -118,6 +120,20 @@
 		{
 			"uuid": "39fe43cd-1cb9-4449-b81f-cc3ef6416bbf",
 			"title": "Don't let dead people control the screen",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "e411dbb2-cc3e-4992-b572-d5f44f45d2b5",
+			"title": "Display dead players correctly to players joining mid-round",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "90c7a675-5630-4c51-83c8-ff9b41026cdc",
+			"title": "Fix sentry getting stuck on walls when going after player",
 			"description": "",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []

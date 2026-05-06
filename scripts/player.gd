@@ -60,12 +60,8 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and not UI.is_pause_menu_open():
-		if is_dead:
-			camera.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-		elif player_control:
+	if event is InputEventMouseMotion and player_control and not UI.is_pause_menu_open() and not is_dead:
 			rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-		if is_dead or player_control:
 			camera.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
 			camera.global_rotation.x = clampf(camera.global_rotation.x, -deg_to_rad(CAMERA_MAX_PITCH_DEGREES), deg_to_rad(CAMERA_MAX_PITCH_DEGREES))
 
@@ -79,6 +75,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif interact_area:
 			interact_area.interact_requested.emit(self)
 			get_viewport().set_input_as_handled()	
+	if OS.has_feature("debug") and event.is_action_pressed("debug_kill"):
+		_on_death.rpc()
 
 
 func _physics_process(delta: float) -> void:
@@ -199,7 +197,12 @@ func _on_jump_timer_timeout() -> void:
 	_jumping = false
 
 
-func _death_animation(target_basis: Basis) -> void:
+func _death_animation() -> void:
+	var target_basis: Basis
+	if velocity.slide(Vector3.UP).length() > 0.5:
+		target_basis = Basis(velocity.slide(Vector3.UP).normalized().rotated(Vector3.UP, PI * 0.5), PI * 0.5)
+	else:
+		target_basis = Basis(Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU), PI * 0.5)
 	var tween = create_tween().set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_IN).set_parallel()
 	tween.tween_property($CollisionShape3D, "global_basis", target_basis, 0.3)
 	tween.tween_property($MeshInstance3D, "global_basis", target_basis, 0.3)
@@ -217,14 +220,14 @@ func set_global_transform_rpc(pos: Vector3, rot: Vector3) -> void:
 func _on_death() -> void:
 	if is_dead: return
 	is_dead = true
+	if interact_ray:
+		interact_ray.enabled = false
 	living_players.erase(self)
 	SignalBus.player_died.emit(self)
-	create_tween().tween_property(camera, "position", Vector3(0, 3, 3), 3.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	var target_basis: Basis
-	if velocity.slide(Vector3.UP).length() > 0.5:
-		target_basis = Basis(velocity.slide(Vector3.UP).normalized().rotated(Vector3.UP, PI * 0.5), PI * 0.5)
-	else:
-		target_basis = Basis(Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU), PI * 0.5)
-	_death_animation(target_basis)
+	var camera_xform = camera.transform.translated(Vector3(0, 3, 3)).rotated_local(Vector3.LEFT, PI * 0.35)
+	var tween := create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(camera, "transform", camera_xform, 3.0)
+	if is_multiplayer_authority():
+		_death_animation()
 
 #endregion

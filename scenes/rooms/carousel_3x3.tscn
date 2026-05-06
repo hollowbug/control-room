@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://df64aojmcmbqa"]
+
+[ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_ljimr"]
+[ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_xrc4j"]
+[ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="3_c20j1"]
+[ext_resource type="Script" uid="uid://fftlydgtdxha" path="res://scripts/game_objects/spinning_object.gd" id="4_wror2"]
+[ext_resource type="Script" uid="uid://d0qmuvtr1cso8" path="res://scripts/components/powerable_component.gd" id="5_m577w"]
+[ext_resource type="PackedScene" uid="uid://bcn52n0r6ewsn" path="res://models/rooms/wall.glb" id="6_c20j1"]
+[ext_resource type="PackedScene" uid="uid://tndotriiytk1" path="res://scenes/game_objects/spikes.tscn" id="6_dvy4g"]
+[ext_resource type="PackedScene" uid="uid://b4lbhg6v1s2rc" path="res://scenes/room_parts/floor_3x3.tscn" id="7_ix7to"]
+[ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/game_objects/ceiling_light.tscn" id="8_xrc4j"]
+
+[sub_resource type="Resource" id="Resource_plxp2"]
+script = ExtResource("2_xrc4j")
+position = Vector2i(1, 0)
+direction = Vector2i(0, -1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_kn1tn"]
+script = ExtResource("2_xrc4j")
+position = Vector2i(2, 1)
+direction = Vector2i(1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_akdk8"]
+script = ExtResource("2_xrc4j")
+position = Vector2i(1, 2)
+direction = Vector2i(0, 1)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="Resource" id="Resource_yonae"]
+script = ExtResource("2_xrc4j")
+position = Vector2i(0, 1)
+direction = Vector2i(-1, 0)
+metadata/_custom_type_script = "uid://dnwgqgpar6xi3"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gwccb"]
+size = Vector3(40, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dscvh"]
+material = ExtResource("3_c20j1")
+size = Vector3(40, 2, 1)
+
+[node name="Carousel3x3" type="Node3D" unique_id=1107156895]
+script = ExtResource("1_ljimr")
+room_size = Vector2i(3, 3)
+allowed_connections = Array[ExtResource("2_xrc4j")]([SubResource("Resource_plxp2"), SubResource("Resource_kn1tn"), SubResource("Resource_akdk8"), SubResource("Resource_yonae")])
+metadata/_custom_type_script = "uid://bk3jcsthcrnvf"
+
+[node name="Room" type="Node3D" parent="." unique_id=995969198]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Room" unique_id=607407718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 1, 22)
+use_collision = true
+size = Vector3(66, 2, 66)
+material = ExtResource("3_c20j1")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Room/CSGBox3D" unique_id=1526542646]
+operation = 2
+radius = 20.0
+height = 3.0
+sides = 32
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Room/CSGBox3D" unique_id=1205876940]
+operation = 2
+size = Vector3(70, 3, 6)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Room/CSGBox3D" unique_id=816880490]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+operation = 2
+size = Vector3(70, 3, 6)
+
+[node name="Floor3x3" parent="Room" unique_id=1879765563 instance=ExtResource("7_ix7to")]
+
+[node name="CeilingLight" parent="Room" unique_id=1171493253 instance=ExtResource("8_xrc4j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 22)
+
+[node name="wall" parent="Room" unique_id=657109078 instance=ExtResource("6_c20j1")]
+
+[node name="wall2" parent="Room" unique_id=1461145505 instance=ExtResource("6_c20j1")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="wall3" parent="Room" unique_id=1736068857 instance=ExtResource("6_c20j1")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 44)
+
+[node name="wall4" parent="Room" unique_id=1166960428 instance=ExtResource("6_c20j1")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 44)
+
+[node name="wall5" parent="Room" unique_id=3767996 instance=ExtResource("6_c20j1")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 44, 0, 44)
+
+[node name="wall6" parent="Room" unique_id=1504073494 instance=ExtResource("6_c20j1")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 44, 0, 44)
+
+[node name="wall7" parent="Room" unique_id=1283413478 instance=ExtResource("6_c20j1")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 44, 0, 0)
+
+[node name="wall8" parent="Room" unique_id=1341987403 instance=ExtResource("6_c20j1")]
+transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 44, 0, 0)
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="." unique_id=1580945037 node_paths=PackedStringArray("power_comp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 22)
+script = ExtResource("4_wror2")
+power_comp = NodePath("PowerableComponent")
+rotation_speed = 0.7
+
+[node name="PowerableComponent" type="Node" parent="AnimatableBody3D" unique_id=1392719459 node_paths=PackedStringArray("room")]
+script = ExtResource("5_m577w")
+room = NodePath("../..")
+metadata/_custom_type_script = "uid://d0qmuvtr1cso8"
+
+[node name="Spikes" parent="AnimatableBody3D" unique_id=983893958 instance=ExtResource("6_dvy4g")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -10, 1, 0)
+size = Vector3(20, 0, 2)
+
+[node name="Spikes2" parent="AnimatableBody3D" unique_id=799428072 instance=ExtResource("6_dvy4g")]
+transform = Transform3D(-1, -8.742278e-08, 3.821371e-15, 0, -4.371139e-08, -1, 8.742278e-08, -1, 4.371139e-08, 10, 1, 0)
+size = Vector3(20, 0, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D" unique_id=788675622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_gwccb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody3D" unique_id=842435321]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_dscvh")

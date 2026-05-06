@@ -25,6 +25,9 @@ background_mode = 1
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_energy = 0.05
+glow_enabled = true
+glow_intensity = 1.25
+glow_bloom = 0.12
 
 [node name="Main" type="Node" unique_id=556756346 node_paths=PackedStringArray("player_spawn_markers", "lobby_spawn_marker")]
 script = ExtResource("1_0wfyh")
@@ -92,6 +95,11 @@ mesh = SubResource("BoxMesh_choun")
 transform = Transform3D(1, 0, 0, 0, 1.0000004, 0, 0, 0, 1.0000004, 0, 0.00030899048, 0.53033733)
 text = "Start"
 font_size = 256
+
+[node name="Label3DRoomCode" type="Label3D" parent="RoomGenerator/ControlRoom" unique_id=45903075]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.378891, -9.833501)
+font_size = 100
 
 [node name="NodeSpawner" type="MultiplayerSpawner" parent="RoomGenerator" unique_id=1430867230]
 spawn_path = NodePath(".")

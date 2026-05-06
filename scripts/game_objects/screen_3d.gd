@@ -20,7 +20,7 @@ var _material_white_outlined = preload("uid://blaiawgnvo4ud")
 func _ready() -> void:
 	if not (_interact_area and _sub_viewport and _sub_viewport_container and _screen_mesh):
 		return
-	#_screen_plane = Plane(_camera.global_basis.z, -_camera.global_position.z)
+	SignalBus.player_died.connect(_on_player_died)
 	_interact_area.interact_ray_entered.connect(_on_interact_area_ray_entered)
 	_interact_area.interact_ray_exited.connect(_on_interact_area_ray_exited)
 	_interact_area.interact_requested.connect(_on_interact_area_interact_requested)
@@ -94,3 +94,8 @@ func _on_interact_area_ray_exited(_player: Player) -> void:
 func _on_interact_area_interact_requested(_player: Player) -> void:
 	if _turned_on and not _player_using_screen:
 		view()
+
+
+func _on_player_died(player: Player) -> void:
+	if player == Globals.local_player and _player_using_screen:
+		exit()

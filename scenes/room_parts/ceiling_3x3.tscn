@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://blyiy66bep7hr"]
+
+[ext_resource type="PackedScene" uid="uid://csanlmsur2kvr" path="res://models/rooms/ceiling_3x3.glb" id="1_s7xvn"]
+[ext_resource type="PackedScene" uid="uid://orine7kjqpy5" path="res://scenes/game_objects/cctv_camera.tscn" id="2_n6r50"]
+
+[node name="Ceiling2x2" type="Node3D" unique_id=1083208716]
+
+[node name="ceiling_3x3" parent="." unique_id=1507838337 instance=ExtResource("1_s7xvn")]
+
+[node name="CCTVCamera3" parent="." unique_id=463506906 instance=ExtResource("2_n6r50")]
+transform = Transform3D(-0.7071067, 0.62375784, -0.33305562, 0, 0.4710118, 0.8821268, 0.7071067, 0.62375784, -0.33305562, -9.428, 12.187, -9.428)
+
+[node name="camera" parent="CCTVCamera3" index="1" unique_id=2010973750]
+transform = Transform3D(-1, -7.2461404e-08, 4.890897e-08, -2.262668e-08, 0.7549157, 0.6558219, -8.444392e-08, 0.6558219, -0.7549157, 0, 0, -0.025079563)
+
+[node name="CCTVCamera4" parent="." unique_id=1925942304 instance=ExtResource("2_n6r50")]
+transform = Transform3D(-0.49999997, -0.76394415, 0.40790814, 0, 0.4710118, 0.8821268, -0.8660253, 0.44106334, -0.23550582, 53.572, 12.187, -9.428)
+
+[node name="camera" parent="CCTVCamera4" index="1" unique_id=2010973750]
+transform = Transform3D(-1, -7.2461404e-08, 4.890897e-08, -2.262668e-08, 0.7549157, 0.6558219, -8.444392e-08, 0.6558219, -0.7549157, 0, 0, -0.025079563)
+
+[node name="CCTVCamera5" parent="." unique_id=1031558123 instance=ExtResource("2_n6r50")]
+transform = Transform3D(0.7071067, -0.62375784, 0.33305565, 0, 0.4710118, 0.8821268, -0.7071066, -0.6237579, 0.3330557, 53.572, 12.187, 53.572002)
+
+[node name="camera" parent="CCTVCamera5" index="1" unique_id=2010973750]
+transform = Transform3D(-1, -7.2461404e-08, 4.890897e-08, -2.262668e-08, 0.7549157, 0.6558219, -8.444392e-08, 0.6558219, -0.7549157, 0, 0, -0.025079563)
+
+[node name="CCTVCamera6" parent="." unique_id=1444834125 instance=ExtResource("2_n6r50")]
+transform = Transform3D(0.4999999, 0.7639443, -0.4079082, -1.490116e-08, 0.47101182, 0.8821269, 0.8660255, -0.4410633, 0.23550582, -9.428001, 12.187, 53.572)
+
+[node name="camera" parent="CCTVCamera6" index="1" unique_id=2010973750]
+transform = Transform3D(-1, -7.2461404e-08, 4.890897e-08, -2.262668e-08, 0.7549157, 0.6558219, -8.444392e-08, 0.6558219, -0.7549157, 0, 0, -0.025079563)
+
+[editable path="CCTVCamera3"]
+[editable path="CCTVCamera4"]
+[editable path="CCTVCamera5"]
+[editable path="CCTVCamera6"]

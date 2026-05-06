@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bk3jcsthcrnvf" path="res://scripts/room.gd" id="1_m8gev"]
 [ext_resource type="Script" uid="uid://dnwgqgpar6xi3" path="res://scripts/room_connection.gd" id="2_wipai"]
-[ext_resource type="Material" uid="uid://vevkw7ptvn7n" path="res://resources/material_white.tres" id="3_ft1ps"]
 [ext_resource type="PackedScene" uid="uid://1eghxwbnkubr" path="res://scenes/game_objects/ceiling_light.tscn" id="4_avy4g"]
+[ext_resource type="PackedScene" uid="uid://bc57ice7dltma" path="res://scenes/room_parts/floor_2x2.tscn" id="4_of0im"]
 [ext_resource type="PackedScene" uid="uid://bk6lv0p5uw6ir" path="res://scenes/game_objects/laser.tscn" id="5_6g25k"]
 [ext_resource type="Script" uid="uid://bk23d6a7qwmuj" path="res://scripts/rooms/laser_room.gd" id="6_ft1ps"]
 [ext_resource type="PackedScene" uid="uid://dwi3phhd7r56s" path="res://scenes/game_objects/battery_placeholder.tscn" id="7_of0im"]
@@ -62,14 +62,10 @@ metadata/_custom_type_script = "uid://bk3jcsthcrnvf"
 
 [node name="Room" type="Node3D" parent="." unique_id=491468938]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Room" unique_id=549454639]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -0.25, 11)
-use_collision = true
-size = Vector3(44, 0.5, 44)
-material = ExtResource("3_ft1ps")
-
 [node name="CeilingLight" parent="Room" unique_id=1171493253 instance=ExtResource("4_avy4g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 11)
+
+[node name="Floor2x2" parent="Room" unique_id=1879765563 instance=ExtResource("4_of0im")]
 
 [node name="Laser" parent="." unique_id=239914294 instance=ExtResource("5_6g25k")]
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 8, 0.32520437, -9.8)
@@ -82,13 +78,8 @@ script = ExtResource("6_ft1ps")
 room = NodePath("..")
 lasers = [NodePath("../Laser"), NodePath("../Laser2")]
 
-[node name="BatteryPlaceholder" parent="." unique_id=347901332 instance=ExtResource("7_of0im")]
-
 [node name="BatteryPlaceholder2" parent="." unique_id=1454351219 instance=ExtResource("7_of0im")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
-
-[node name="BatteryPlaceholder3" parent="." unique_id=1867335277 instance=ExtResource("7_of0im")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 22)
 
 [node name="BatteryPlaceholder4" parent="." unique_id=1900300690 instance=ExtResource("7_of0im")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22)

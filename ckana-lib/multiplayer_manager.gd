@@ -5,6 +5,7 @@ enum State {DEFAULT, CREATING_STEAM_LOBBY, JOINING_STEAM_LOBBY}
 
 signal connection_result(result: Error)
 signal connection_lost()
+signal steam_lobby_code_set(code: String)
 
 const PORT = 8000
 
@@ -72,7 +73,6 @@ func _on_steam_lobby_created(result: int, id: int) -> void:
 		error = peer.create_host()
 		if error == OK:
 			multiplayer.multiplayer_peer = peer
-			state = State.DEFAULT
 			_initiate_steam_lobby_connection()
 			print("Created Steam lobby: ", lobby_id)
 		connection_result.emit(error)
@@ -81,6 +81,8 @@ func _on_steam_lobby_created(result: int, id: int) -> void:
 
 
 func _on_steam_lobby_match_list(lobbies: Array) -> void:
+	print("Steam.lobby_match_list received")
+	print("State: %s" % State.find_key(state))
 	if state == State.CREATING_STEAM_LOBBY:
 		state = State.DEFAULT
 		# Assign a random join code when creating a lobby,
@@ -91,7 +93,10 @@ func _on_steam_lobby_match_list(lobbies: Array) -> void:
 		while true:
 			lobby_code = "%05d" % (randi() % 10_000)
 			if lobby_code not in codes: break
-		Steam.setLobbyData(lobby_id, "join_code", lobby_code)
+		print("Attempting to set 'join_code' to %s for lobby %d" % [lobby_code, lobby_id])
+		if Steam.setLobbyData(lobby_id, "join_code", lobby_code):
+			print("Success")
+			steam_lobby_code_set.emit(lobby_code)
 	elif state == State.JOINING_STEAM_LOBBY:
 		for id: int in lobbies:
 			if Steam.getLobbyData(id, "join_code") == lobby_code:

@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://bkx7utxdssvgg" path="res://models/laser_emitter.glb" id="1_a7dhc"]
 [ext_resource type="Script" uid="uid://2n5w84ivb4dw" path="res://scripts/game_objects/laser.gd" id="1_jjj73"]
-[ext_resource type="Shader" uid="uid://phppaf045wi1" path="res://shaders/additive_linear_volume.gdshader" id="2_jjj73"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jjj73"]
 properties/0/path = NodePath("Pivot:rotation")
@@ -47,15 +46,15 @@ _data = {
 &"laser_1": SubResource("Animation_412cd")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_412cd"]
-render_priority = 0
-shader = ExtResource("2_jjj73")
-shader_parameter/color = Color(1, 0, 0, 1)
-shader_parameter/density = 50.0
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ravcl"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 4.0
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_q8rul"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_412cd")
+material = SubResource("StandardMaterial3D_ravcl")
 top_radius = 0.1
 bottom_radius = 0.1
 height = 100.0

@@ -38,14 +38,12 @@ func setup() -> void:
 	used_rect.size += Vector2.ONE
 	used_rect.position += Vector2.ONE * -0.5
 	
-	#var used_rect_rotated := 
-	
 	# Center map
 	var map_center := used_rect.position + used_rect.size * 0.5
 	
-	prints("Used rect:", used_rect)
-	prints("Map center:", map_center)
-	prints("Minimap pos:", _mini_map.position)
+	#prints("Used rect:", used_rect)
+	#prints("Map center:", map_center)
+	#prints("Minimap pos:", _mini_map.position)
 	
 	# Rotate map
 	%MiniMapPivot.rotation = -(map_rotation - 1) * PI * 0.5

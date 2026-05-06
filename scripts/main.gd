@@ -53,11 +53,13 @@ func _ready() -> void:
 			print("Result: ", error_string(result))
 			if result != OK: _return_to_menu()
 			_host_setup()
+			MultiplayerManager.steam_lobby_code_set.connect(_set_room_code)
 		MultiplayerManager.Mode.STEAM_CLIENT:
 			MultiplayerManager.join_steam_lobby(MultiplayerManager.lobby_code)
 			var result: Error = await MultiplayerManager.connection_result
 			print("Result: ", error_string(result))
 			if result != OK: _return_to_menu()
+			_set_room_code(MultiplayerManager.lobby_code)
 	UI.hide_loading_screen()
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -235,7 +237,11 @@ func _cycle_spectated_player(backwards := false) -> void:
 	_currently_spectated_player = players[index]
 	_currently_spectated_player.camera.make_current()
 	UI.set_spectated_player(int(_currently_spectated_player.name))
-	
+
+
+func _set_room_code(code: String) -> void:
+	%Label3DRoomCode.text = "Room code: %s" % code
+
 
 #region RPCs /////////////////////////////////////////
 

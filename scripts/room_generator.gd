@@ -23,6 +23,7 @@ var _ceilings: Dictionary[Vector2i, PackedScene] = {
 	Vector2i(1, 1): load("uid://ccotmq2blruil"),
 	Vector2i(2, 1): load("uid://2cnd3uqpb6ux"),
 	Vector2i(2, 2): load("uid://m1e7amepqeqg"),
+	Vector2i(3, 3): load("uid://blyiy66bep7hr"),
 }
 var _scenes: Dictionary[String, PackedScene] = {
 	starting_room = load("uid://7bs7c7wvcu1d"),
@@ -32,11 +33,13 @@ var _scenes: Dictionary[String, PackedScene] = {
 	battery = load("uid://cmqe6rq82e3mv"),
 }
 var _room_scenes: Array[PackedScene] = [
-	load("uid://eu6u2228knpv"),
-	load("uid://bvy6smqlncnii"),
-	load("uid://lq3ikfse6o6i"),
-	load("uid://cmq1ti3i315ii"),
+	#load("uid://eu6u2228knpv"),
+	#load("uid://bvy6smqlncnii"),
+	#load("uid://lq3ikfse6o6i"),
+	#load("uid://cmq1ti3i315ii"),
 	load("uid://c5onjgipo1fqg"),
+	#load("uid://df64aojmcmbqa"),
+	#load("uid://b7fhpm4x46tr3"),
 ]
 var _grid: Dictionary[Vector2i, int]
 var _rooms: Array[Room]
@@ -52,7 +55,6 @@ func _ready() -> void:
 
 
 func generate_map() -> void:
-	print(_room_scenes)
 	map_index += 1
 	
 	#print("\n==== STARTING GENERATION ====\n")

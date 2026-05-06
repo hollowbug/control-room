@@ -6,7 +6,7 @@ const TURRET_ROT_SPEED = 4.0
 const BASE_ROT_SPEED = 2.0
 const TurretComponent = preload("uid://k0yyoomj42jk")
 
-enum State { STANDBY, ROTATING_TURRET, ROTATING_BASE, MOVING }
+enum State { STANDBY, CHASE, ROTATING_TURRET, ROTATING_BASE, MOVING }
 
 var powered := true
 
@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 		_turret.shoot(delta)
 	
 	if target:
-		_state = State.ROTATING_BASE
+		_state = State.CHASE
 		_target_pos = target.global_position
 		_target_pos.y = global_position.y
 		return
@@ -56,19 +56,15 @@ func _roam_behavior(delta: float) -> void:
 			if randf() < 0.98: return
 			# 25% chance to pick a random target position and move to it
 			if randf() < 0.25:
-				var test_coll := KinematicCollision3D.new()
-				var test_motion := Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU) * 50
-				var result := test_move(global_transform, test_motion, test_coll)
-				var pos := test_coll.get_position() if result else global_position + test_motion
-				pos.y = global_position.y
-				var dist := global_position.distance_to(pos) if result else 50.0
-				if dist > 5.0:
-					_state = State.ROTATING_BASE
-					_target_pos = global_position.move_toward(pos, randf_range(dist * 0.5, dist - 2.0))
-					_move_dir = 1 if global_basis.z.angle_to(test_motion) > PI * 0.5 else -1
+				_target_pos = global_position + Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU) * 50
+				_try_move()
 			if _state == State.STANDBY: # 75% chance to start rotating cannon to a random angle
 				_state = State.ROTATING_TURRET
 				_target_pos = global_position + Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU)
+		
+		State.CHASE:
+			if not _try_move():
+				_state = State.STANDBY
 		
 		State.ROTATING_TURRET:
 			if Utils.rotate_toward_target(_turret, _target_pos, TURRET_ROT_SPEED * delta):
@@ -89,3 +85,18 @@ func _roam_behavior(delta: float) -> void:
 			if global_position.distance_squared_to(_target_pos) < 0.5:
 				_state = State.STANDBY
 				velocity = Vector3.ZERO
+
+
+func _try_move() -> bool:
+	var test_coll := KinematicCollision3D.new()
+	var test_motion := global_position.direction_to(_target_pos) * 50
+	var result := test_move(global_transform, test_motion, test_coll)
+	var pos := test_coll.get_position() if result else global_position + test_motion
+	pos.y = global_position.y
+	var dist := global_position.distance_to(pos) if result else 50.0
+	if dist > 5.0:
+		_state = State.ROTATING_BASE
+		_target_pos = global_position.move_toward(pos, randf_range(dist * 0.5, dist - 2.0))
+		_move_dir = 1 if global_basis.z.angle_to(test_motion) > PI * 0.5 else -1
+		return true
+	return false
