@@ -19,6 +19,7 @@ rings = 4
 [node name="TurretBullet" type="Node3D" unique_id=401215116 node_paths=PackedStringArray("_ray_cast")]
 top_level = true
 script = ExtResource("1_31p5e")
+speed = 150.0
 _ray_cast = NodePath("RayCast3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1715183923]

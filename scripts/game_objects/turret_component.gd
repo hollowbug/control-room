@@ -15,8 +15,13 @@ func shoot(delta: float) -> void:
 		_shoot.rpc(Utils.get_random_direction(), randf_range(-1, 1) * inaccuracy)
 
 
+func _process(delta: float) -> void:
+	position = position.lerp(Vector3(), delta * 3)
+
+
 @rpc("call_local")
 func _shoot(axis: Vector3, angle: float) -> void:
+	position = basis.z * randf_range(0.15, 0.2)
 	var bullet := _bullet_scene.instantiate() as Node3D
 	if not bullet: return
 	if _bullet_spawn_marker:

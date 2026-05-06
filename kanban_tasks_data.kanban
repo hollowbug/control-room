@@ -12,7 +12,8 @@
 			"title": "Todo",
 			"tasks": [
 				"c25ee04c-24f8-4136-8e34-f8ee5d2ec1f8",
-				"35194b68-22c9-4d85-9502-1b62633075fe"
+				"35194b68-22c9-4d85-9502-1b62633075fe",
+				"7ec1545a-696b-4c56-a888-1075ba186f07"
 			]
 		},
 		{
@@ -134,6 +135,13 @@
 		{
 			"uuid": "90c7a675-5630-4c51-83c8-ff9b41026cdc",
 			"title": "Fix sentry getting stuck on walls when going after player",
+			"description": "",
+			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
+			"steps": []
+		},
+		{
+			"uuid": "7ec1545a-696b-4c56-a888-1075ba186f07",
+			"title": "Muzzle flash",
 			"description": "",
 			"category": "91aa1df9-8b8d-4384-88a1-ce9085e65863",
 			"steps": []

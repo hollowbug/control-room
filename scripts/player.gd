@@ -153,7 +153,7 @@ func drop_held_item() -> void:
 
 func die() -> void:
 	## Host handles killing players
-	if multiplayer.is_server():
+	if multiplayer.is_server() and not Globals.debug_players_invincible:
 		_on_death.rpc()
 
 

@@ -123,7 +123,6 @@ text = "10"
 
 [node name="PauseMenu" type="ColorRect" parent="." unique_id=685634354]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -161,8 +160,33 @@ text = "Main Menu"
 layout_mode = 2
 text = "Exit to Desktop"
 
+[node name="DebugMenu" type="PanelContainer" parent="PauseMenu/VBoxContainer" unique_id=2133032729]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/VBoxContainer/DebugMenu" unique_id=595416436]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer/DebugMenu/VBoxContainer" unique_id=1404204884]
+layout_mode = 2
+text = "Debug Menu"
+horizontal_alignment = 1
+
+[node name="CheckBoxDebugDraw" type="CheckBox" parent="PauseMenu/VBoxContainer/DebugMenu/VBoxContainer" unique_id=1393176438]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Debug Draw"
+
+[node name="CheckBoxInvinciblePlayers" type="CheckBox" parent="PauseMenu/VBoxContainer/DebugMenu/VBoxContainer" unique_id=1383455356]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Invincible Players"
+
 [node name="LoadingScreen" type="ColorRect" parent="." unique_id=445017070]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -187,3 +211,5 @@ text = "Connecting..."
 
 [connection signal="pressed" from="PauseMenu/VBoxContainer/Button" to="." method="_on_button_main_menu_pressed"]
 [connection signal="pressed" from="PauseMenu/VBoxContainer/Button2" to="." method="_on_button_quit_pressed"]
+[connection signal="toggled" from="PauseMenu/VBoxContainer/DebugMenu/VBoxContainer/CheckBoxDebugDraw" to="." method="_on_check_box_debug_draw_toggled"]
+[connection signal="toggled" from="PauseMenu/VBoxContainer/DebugMenu/VBoxContainer/CheckBoxInvinciblePlayers" to="." method="_on_check_box_invincible_players_toggled"]

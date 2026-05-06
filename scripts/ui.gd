@@ -12,6 +12,12 @@ func _ready() -> void:
 	close_pause_menu()
 	hide_loading_screen()
 	set_spectated_player(-1)
+	if OS.has_feature("debug"):
+		%CheckBoxDebugDraw.button_pressed = Globals.debug_draw_enabled
+		%CheckBoxInvinciblePlayers.button_pressed = Globals.debug_players_invincible
+		%CheckBoxInvinciblePlayers.visible = multiplayer.is_server()
+	else:
+		%DebugMenu.queue_free()
 
 
 func show_crosshair() -> void:
@@ -87,3 +93,11 @@ func _on_button_main_menu_pressed() -> void:
 
 func _on_button_quit_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_check_box_debug_draw_toggled(toggled_on: bool) -> void:
+	Globals.debug_draw_enabled = toggled_on
+
+
+func _on_check_box_invincible_players_toggled(toggled_on: bool) -> void:
+	Globals.debug_players_invincible = toggled_on
